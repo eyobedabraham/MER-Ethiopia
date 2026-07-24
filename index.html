@@ -2989,67 +2989,75 @@
             'use strict';
 
             // ================================================================
-            // GALLERY DATA (12 images - replace src with your Cloudinary URLs)
+            // GALLERY DATA (Updated with your local images)
+            // tech-1 and tech-2 remain as placeholders
+            // abiy-ahmed-01.jpg added as a new image
             // ================================================================
             const galleryData = [{
                 id: 'traditional-farming-1',
-                src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop',
+                src: 'assets/images/traditional-farming-1.jpg',
                 title: 'Traditional Farming',
                 desc: 'Ploughing with oxen in the Ethiopian highlands',
                 tag: 'traditional'
             }, {
                 id: 'traditional-farming-2',
-                src: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=600&h=400&fit=crop',
+                src: 'assets/images/traditional-farming-2.jpg',
                 title: 'Traditional Farming',
                 desc: 'Rural landscape with traditional homesteads',
                 tag: 'traditional'
             }, {
                 id: 'modern-farming-1',
-                src: 'https://images.unsplash.com/photo-1592982537447-6f2a6a0a7f9d?w=600&h=400&fit=crop',
+                src: 'assets/images/modern-farming-1.jpg',
                 title: 'Modern Farming',
                 desc: 'Large-scale mechanised farming with tractors',
                 tag: 'modern'
             }, {
                 id: 'modern-farming-2',
-                src: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=400&fit=crop',
+                src: 'assets/images/modern-farming-2.jpg',
                 title: 'Modern Farming',
                 desc: 'Irrigation systems and greenhouses',
                 tag: 'modern'
             }, {
                 id: 'traditional-dairy-1',
-                src: 'https://images.unsplash.com/photo-1532710093739-9470acb6b8f9?w=600&h=400&fit=crop',
+                src: 'assets/images/traditional-dairy-1.jpg',
                 title: 'Traditional Dairy',
                 desc: 'Hand-milking and local dairy practices',
                 tag: 'traditional'
             }, {
                 id: 'traditional-dairy-2',
-                src: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9c2a6?w=600&h=400&fit=crop',
+                src: 'assets/images/traditional-dairy-2.jpg',
                 title: 'Traditional Dairy',
                 desc: 'Local milk containers and smallholder farmers',
                 tag: 'traditional'
             }, {
                 id: 'modern-dairy-1',
-                src: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&h=400&fit=crop',
+                src: 'assets/images/modern-dairy-1.jpg',
                 title: 'Modern Dairy',
                 desc: 'Automated milking parlours and high-tech farms',
                 tag: 'modern'
             }, {
                 id: 'modern-dairy-2',
-                src: 'https://images.unsplash.com/photo-1584735935682-2f2b69d9dfa3?w=600&h=400&fit=crop',
+                src: 'assets/images/modern-dairy-2.jpg',
                 title: 'Modern Dairy',
                 desc: 'Pasteurisation plants and packaged dairy products',
                 tag: 'modern'
             }, {
                 id: 'addis-ababa-1',
-                src: 'https://images.unsplash.com/photo-1562707948-107b8524ae2f?w=600&h=400&fit=crop',
+                src: 'assets/images/addis-ababa-1.jpg',
                 title: 'Addis Ababa',
                 desc: 'Modern skyline and urban development',
                 tag: 'city'
             }, {
                 id: 'addis-ababa-2',
-                src: 'https://images.unsplash.com/photo-1578389784255-8e11966df65b?w=600&h=400&fit=crop',
+                src: 'assets/images/addis-ababa-2.jpg',
                 title: 'Addis Ababa',
                 desc: 'Bustling streets and vibrant city life',
+                tag: 'city'
+            }, {
+                id: 'abiy-ahmed-01',
+                src: 'assets/images/abiy-ahmed-01.jpg',
+                title: 'H.E. Dr. Abiy Ahmed',
+                desc: 'Prime Minister of Ethiopia — Leading the nation toward prosperity',
                 tag: 'city'
             }, {
                 id: 'tech-1',
@@ -3439,7 +3447,7 @@
             function renderGallery() {
                 galleryGrid.innerHTML = galleryData.map((item, index) => `
                     <div class="gallery-item scroll-animate animate-zoom-in delay-${(index % 6) + 1}" data-index="${index}">
-                        <img src="${item.src}" alt="${item.title}" loading="lazy" />
+                        <img src="${item.src}" alt="${item.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/EEE/999?text=Image+Not+Found'"/>
                         <div class="gallery-caption">
                             <span class="gallery-tag ${item.tag}">${item.tag}</span>
                             <span>${item.title}</span>
@@ -4015,7 +4023,7 @@
             }, 400);
 
             console.log('🇪🇹 MER Ethiopia — Enhancing Ethiopian Dairy Production.');
-            console.log('📸 Gallery loaded with ' + galleryData.length + ' images. Replace the "src" URLs with your Cloudinary images.');
+            console.log('📸 Gallery loaded with ' + galleryData.length + ' images.');
             console.log('🔗 E-commerce: https://mertech.pythonanywhere.com/');
         })();
     </script>
