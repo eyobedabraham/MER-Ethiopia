@@ -1,0 +1,4023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MER Ethiopia – Enhancing Ethiopian Dairy Production</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ========== RESET & BASE ========== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --white: #FFFFFF;
+            --off-white: #F8F9FA;
+            --sky-blue: #87CEEB;
+            --sky-blue-dark: #6BB5D9;
+            --light-grey: #E9ECEF;
+            --warm-beige: #F5EFE6;
+            --dim-gold: #f0d9a8;
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-light: #6B7280;
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 16px 56px rgba(0, 0, 0, 0.12);
+            --shadow-glow: 0 12px 40px rgba(135, 206, 235, 0.5);
+            --transition-smooth: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --nav-height: 76px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        a,
+        button,
+        input,
+        textarea {
+            font-family: var(--font-primary);
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            border-radius: 12px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== LOADING SCREEN ========== */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-ring {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.08);
+            border-top-color: var(--sky-blue);
+            animation: spin 1s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+            margin-bottom: 24px;
+        }
+        .loader-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: pulseText 1.8s ease-in-out infinite;
+        }
+        .loader-bar {
+            width: 160px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+        .loader-bar-inner {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--sky-blue), var(--dim-gold));
+            border-radius: 4px;
+            animation: loadBar 2.2s ease-in-out forwards;
+        }
+
+        @keyframes loadBar {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        @keyframes pulseText {
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ========== CUSTOM CURSOR ========== */
+        .cursor-dot {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--sky-blue);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform, width, height;
+            mix-blend-mode: difference;
+        }
+        .cursor-dot.hover {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid var(--sky-blue);
+            box-shadow: 0 0 30px rgba(135, 206, 235, 0.3);
+            mix-blend-mode: normal;
+        }
+        .cursor-glow {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(135, 206, 235, 0.08) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            transition: opacity 0.5s ease;
+        }
+        @media (max-width: 1024px) {
+            .cursor-dot,
+            .cursor-glow {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* ========== SCROLL PROGRESS ========== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sky-blue), var(--dim-gold));
+            z-index: 1000;
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 20px rgba(135, 206, 235, 0.3);
+        }
+
+        /* ========== BACK TO TOP ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(135, 206, 235, 0.4);
+            transform: translateY(80px) scale(0.6);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-to-top.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        .back-to-top:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 36px rgba(135, 206, 235, 0.55);
+        }
+        .back-to-top svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        /* ========== HEADER (Disappears on scroll) ========== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--nav-height);
+            padding: 0 32px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, box-shadow 0.4s ease;
+            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header.hidden {
+            transform: translateY(-100%);
+        }
+        .header.light {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .header.light .header-logo,
+        .header.light .nav-links a,
+        .header.light .lang-btn,
+        .header.light .btn-login,
+        .header.light .btn-download-header {
+            color: var(--white);
+        }
+        .header.light .hamburger span {
+            background: var(--white);
+        }
+        .header.light .btn-login {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .header.light .btn-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .header.light .btn-download-header {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: var(--white);
+        }
+        .header.light .btn-download-header:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            text-decoration: none;
+            z-index: 1001;
+            transition: color 0.3s ease;
+        }
+        .header-logo .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--sky-blue);
+            color: var(--white);
+            font-size: 18px;
+            font-weight: 900;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .header-logo:hover .logo-mark {
+            transform: scale(1.05) rotate(-4deg);
+            box-shadow: 0 0 30px rgba(135, 206, 235, 0.3);
+        }
+        .header-logo span:last-child {
+            font-weight: 700;
+        }
+        .header-logo span:last-child small {
+            font-weight: 400;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+            padding: 4px 0;
+            transition: color 0.25s ease;
+            letter-spacing: 0.2px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--sky-blue);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        /* Download button in header */
+        .btn-download-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            background: transparent;
+            border: 1.5px solid var(--sky-blue);
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .btn-download-header:hover {
+            background: var(--sky-blue);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(135, 206, 235, 0.3);
+            transform: scale(1.05);
+        }
+        .btn-download-header svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .btn-login {
+            padding: 6px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            background: transparent;
+            border: 1px solid var(--light-grey);
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .btn-login:hover {
+            background: var(--light-grey);
+            border-color: var(--text-secondary);
+        }
+        .btn-signup {
+            padding: 6px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white);
+            background: var(--sky-blue);
+            border: none;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 16px rgba(135, 206, 235, 0.3);
+            cursor: pointer;
+        }
+        .btn-signup:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 28px rgba(135, 206, 235, 0.45);
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            margin-right: 4px;
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.25s ease;
+            letter-spacing: 0.3px;
+            position: relative;
+            font-family: var(--font-primary);
+        }
+        .lang-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--sky-blue);
+            transition: width 0.25s ease;
+        }
+        .lang-btn:hover::after,
+        .lang-btn.active::after {
+            width: 70%;
+        }
+        .lang-btn.active {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .lang-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--light-grey);
+            margin: 0 2px;
+            opacity: 0.5;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            background: transparent;
+            border: none;
+            padding: 8px;
+        }
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 40px;
+        }
+        .mobile-nav-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .mobile-nav-overlay a {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+        .mobile-nav-overlay a:hover {
+            color: var(--sky-blue);
+        }
+        .mobile-nav-overlay .mobile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .mobile-nav-overlay .mobile-actions a {
+            font-size: 15px;
+            padding: 12px 28px;
+            border-radius: 40px;
+            border: 1px solid var(--light-grey);
+            background: transparent;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .mobile-nav-overlay .mobile-actions a.btn-download-mobile {
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 4px 16px rgba(135, 206, 235, 0.3);
+        }
+        .mobile-nav-overlay .mobile-actions a.btn-download-mobile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 28px rgba(135, 206, 235, 0.45);
+        }
+        .mobile-nav-overlay .mobile-actions .btn-login-mobile {
+            border-color: var(--light-grey);
+            background: transparent;
+            color: var(--text-primary);
+        }
+        .mobile-nav-overlay .mobile-actions .btn-signup-mobile {
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+        }
+        .mobile-nav-overlay .mobile-lang {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .mobile-nav-overlay .mobile-lang .lang-btn {
+            font-size: 16px;
+            padding: 8px 20px;
+        }
+
+        /* ========== SIGNUP POPUP ========== */
+        .signup-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 11000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            padding: 20px;
+        }
+        .signup-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .signup-card {
+            background: var(--white);
+            max-width: 460px;
+            width: 100%;
+            border-radius: 28px;
+            padding: 40px 36px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            transform: scale(0.9) translateY(30px);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .signup-overlay.open .signup-card {
+            transform: scale(1) translateY(0);
+        }
+        .signup-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: transform 0.3s ease, color 0.3s ease;
+            line-height: 1;
+            padding: 4px 8px;
+        }
+        .signup-close:hover {
+            transform: rotate(90deg);
+            color: var(--text-primary);
+        }
+        .signup-card h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        .signup-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .signup-card .form-group {
+            margin-bottom: 16px;
+        }
+        .signup-card label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+        .signup-card input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--light-grey);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: var(--font-primary);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: var(--off-white);
+            color: var(--text-primary);
+            outline: none;
+        }
+        .signup-card input:focus {
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 4px rgba(135, 206, 235, 0.12);
+            background: var(--white);
+        }
+        .signup-card .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 4px 20px rgba(135, 206, 235, 0.30);
+            margin-top: 4px;
+        }
+        .signup-card .signup-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 32px rgba(135, 206, 235, 0.45);
+        }
+        .signup-card .signup-footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .signup-card .signup-footer a {
+            color: var(--sky-blue);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .signup-card .signup-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--text-primary);
+            padding-top: var(--nav-height);
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            will-change: transform;
+            transform: scale(1.1);
+            transition: transform 0.1s ease-out;
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.4) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(26, 26, 26, 0.4) 100%);
+        }
+
+        #particles-canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 900px;
+            padding: 40px 24px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 28px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.2s forwards;
+        }
+        .hero h1 {
+            font-size: clamp(48px, 10vw, 92px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: var(--white);
+            text-shadow: 0 4px 48px rgba(0, 0, 0, 0.20);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.3s forwards;
+        }
+        .hero h1 .highlight {
+            color: var(--sky-blue);
+            text-shadow: 0 4px 40px rgba(135, 206, 235, 0.3);
+        }
+        .hero-sub {
+            font-size: clamp(18px, 2.2vw, 26px);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.90);
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 40px;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.5s forwards;
+            min-height: 3.2em;
+        }
+        .hero-sub .typed-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--sky-blue);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.7s forwards;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 44px;
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 8px 32px rgba(135, 206, 235, 0.35);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(0);
+            animation: rippleAnim 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes rippleAnim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        .btn-primary:hover {
+            transform: scale(1.08) translateY(-6px);
+            box-shadow: 0 16px 48px rgba(135, 206, 235, 0.55);
+        }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 44px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            color: var(--white);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .btn-secondary:hover {
+            transform: scale(1.08) translateY(-6px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Hero download button */
+        .btn-download-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 44px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            color: var(--white);
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            border-radius: 60px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .btn-download-hero:hover {
+            transform: scale(1.08) translateY(-6px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        .btn-download-hero svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .floating-icon {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.3;
+            pointer-events: none;
+            will-change: transform;
+            animation: floatDrift 4s ease-in-out infinite alternate;
+        }
+        .floating-icon svg {
+            width: 48px;
+            height: 48px;
+            fill: rgba(255, 255, 255, 0.2);
+            filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.08));
+        }
+        .floating-icon:nth-child(1) {
+            top: 15%;
+            left: 6%;
+            animation-delay: 0s;
+        }
+        .floating-icon:nth-child(2) {
+            bottom: 20%;
+            right: 5%;
+            animation-delay: 1.2s;
+        }
+        .floating-icon:nth-child(3) {
+            top: 50%;
+            right: 12%;
+            animation-delay: 2.4s;
+            transform: translateY(-50%);
+        }
+        .floating-icon:nth-child(4) {
+            bottom: 30%;
+            left: 8%;
+            animation-delay: 0.8s;
+        }
+        .floating-icon:nth-child(5) {
+            top: 25%;
+            right: 25%;
+            animation-delay: 1.8s;
+            opacity: 0.15;
+        }
+        .floating-icon:nth-child(6) {
+            bottom: 10%;
+            left: 40%;
+            animation-delay: 3.0s;
+            opacity: 0.15;
+        }
+
+        @keyframes floatDrift {
+            0% {
+                transform: translateY(-10px) rotate(-2deg);
+            }
+            100% {
+                transform: translateY(10px) rotate(2deg);
+            }
+        }
+
+        /* ========== SECTION SHARED ========== */
+        .section {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .section-alt {
+            background: var(--off-white);
+        }
+        .section-beige {
+            background: var(--warm-beige);
+        }
+        .section-dark {
+            background: var(--text-primary);
+            color: var(--white);
+        }
+        .section-dark .section-title {
+            color: var(--white);
+        }
+        .section-dark .section-sub {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .section-dark .section-label {
+            color: var(--sky-blue);
+        }
+        .section-dark .section-label::before {
+            background: var(--sky-blue);
+        }
+
+        .section-title {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .section-title .highlight {
+            color: var(--sky-blue);
+            position: relative;
+        }
+        .section-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--sky-blue);
+            opacity: 0.2;
+            border-radius: 4px;
+        }
+        .section-sub {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 640px;
+            line-height: 1.7;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--sky-blue);
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 20px;
+        }
+        .section-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 2px;
+            background: var(--sky-blue);
+            border-radius: 4px;
+        }
+
+        /* ========== VISION ========== */
+        .vision-section {
+            text-align: center;
+            padding: 120px 0;
+        }
+        .vision-section .container {
+            max-width: 820px;
+        }
+        .vision-text {
+            font-size: clamp(18px, 1.6vw, 24px);
+            line-height: 1.9;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: 8px;
+        }
+        .vision-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .vision-divider {
+            width: 80px;
+            height: 3px;
+            background: var(--sky-blue);
+            margin: 28px auto 0;
+            border-radius: 4px;
+            opacity: 0.6;
+            animation: pulseWidth 3s ease-in-out infinite;
+        }
+        @keyframes pulseWidth {
+            0%,
+            100% {
+                width: 80px;
+                opacity: 0.6;
+            }
+            50% {
+                width: 120px;
+                opacity: 1;
+            }
+        }
+
+        /* ========== ETHIOPIA'S INFLUENCE ========== */
+        .influence-section {
+            padding: 100px 0;
+            background: var(--off-white);
+        }
+        .influence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+        .influence-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 36px 32px 32px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-grey);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .influence-card:hover {
+            transform: translateY(-10px) rotateX(2deg);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--dim-gold);
+        }
+        .influence-card .influence-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+        .influence-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .influence-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* ========== QUOTE SLIDER ========== */
+        .quote-section {
+            padding: 80px 0;
+            background: var(--text-primary);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .quote-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80') center/cover;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+        .quote-slider {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 200px;
+        }
+        .quote-slide {
+            display: none;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        .quote-slide.active {
+            display: block;
+        }
+        .quote-slide blockquote {
+            font-size: clamp(24px, 3.5vw, 42px);
+            font-weight: 600;
+            line-height: 1.4;
+            font-style: italic;
+            position: relative;
+        }
+        .quote-slide blockquote::before {
+            content: '\201C';
+            font-size: 80px;
+            color: var(--sky-blue);
+            opacity: 0.3;
+            position: absolute;
+            left: -40px;
+            top: -20px;
+            font-family: Georgia, serif;
+        }
+        .quote-slide .quote-attribution {
+            margin-top: 24px;
+            font-size: 18px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+        }
+        .quote-slide .quote-attribution strong {
+            color: var(--sky-blue);
+            font-weight: 600;
+        }
+        .quote-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 32px;
+            position: relative;
+            z-index: 1;
+        }
+        .quote-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+        .quote-dot.active {
+            background: var(--sky-blue);
+            transform: scale(1.3);
+            box-shadow: 0 0 20px rgba(135, 206, 235, 0.3);
+        }
+        .quote-dot:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ========== LANDSCAPE & LEADERSHIP ========== */
+        .landscape-leadership {
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .landscape-leadership .image-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0;
+            min-height: 500px;
+        }
+        .landscape-leadership .landscape-img {
+            background: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80') center/cover;
+            position: relative;
+            min-height: 350px;
+            transition: transform 0.6s ease;
+        }
+        .landscape-leadership .landscape-img:hover {
+            transform: scale(1.02);
+        }
+        .landscape-leadership .city-img {
+            background: url('https://images.unsplash.com/photo-1562707948-107b8524ae2f?w=800&q=80') center/cover;
+            min-height: 350px;
+            position: relative;
+            transition: transform 0.6s ease;
+        }
+        .landscape-leadership .city-img:hover {
+            transform: scale(1.02);
+        }
+        .landscape-leadership .overlay-text {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            padding: 16px 28px;
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 4px solid var(--sky-blue);
+            max-width: 80%;
+            transition: all 0.4s ease;
+        }
+        .landscape-leadership .overlay-text:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: translateY(-4px);
+        }
+        .landscape-leadership .overlay-text strong {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        .landscape-leadership .overlay-text small {
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        /* ========== STORY ========== */
+        .story-section {
+            padding: 120px 0;
+            background: var(--off-white);
+            position: relative;
+            overflow: hidden;
+        }
+        .story-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.04;
+            pointer-events: none;
+        }
+        .story-section .container {
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
+        }
+        .story-body {
+            font-size: 17px;
+            line-height: 1.9;
+            color: var(--text-secondary);
+            columns: 2 340px;
+            column-gap: 48px;
+            text-align: justify;
+        }
+        .story-body p {
+            margin-bottom: 20px;
+            break-inside: avoid;
+        }
+        .story-body p:last-child {
+            margin-bottom: 0;
+        }
+        .story-body strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .story-body .dropcap::first-letter {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--sky-blue);
+            float: left;
+            line-height: 1;
+            margin-right: 8px;
+            margin-top: 4px;
+        }
+
+        /* ========== SOLUTIONS ========== */
+        .solutions-section {
+            padding: 120px 0;
+        }
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 28px;
+            margin-top: 48px;
+        }
+        .solution-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 36px 32px 32px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid var(--light-grey);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--sky-blue);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+        .solution-card::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, var(--sky-blue), var(--dim-gold), var(--sky-blue));
+            background-size: 300% 300%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+            animation: gradientMove 4s ease infinite;
+        }
+        .solution-card:hover::after {
+            opacity: 1;
+        }
+        .solution-card:hover {
+            transform: translateY(-15px) rotateX(2deg) rotateY(2deg);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+            background: var(--off-white);
+        }
+        .solution-card:hover::before {
+            opacity: 1;
+        }
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .solution-card .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: rgba(135, 206, 235, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            transition: background 0.35s ease, transform 0.4s ease;
+        }
+        .solution-card:hover .card-icon {
+            background: rgba(135, 206, 235, 0.22);
+            transform: scale(1.1) rotate(-4deg);
+        }
+        .solution-card .card-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--sky-blue);
+        }
+        .solution-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .solution-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .solution-card .coming-soon-badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 4px 16px;
+            background: var(--light-grey);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 40px;
+        }
+        .solution-card.coming-soon {
+            opacity: 0.7;
+        }
+        .solution-card.coming-soon:hover {
+            opacity: 0.85;
+        }
+        .solution-card.coming-soon .coming-soon-badge {
+            background: var(--dim-gold);
+            color: var(--text-primary);
+        }
+        .solution-card .gold-ribbon {
+            position: absolute;
+            top: 12px;
+            right: -28px;
+            background: var(--dim-gold);
+            color: var(--text-primary);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 32px;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* ========== GALLERY ========== */
+        .gallery-section {
+            padding: 100px 0;
+            background: var(--off-white);
+        }
+        .gallery-section:nth-of-type(even) {
+            background: var(--white);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+        .gallery-grid .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            background: var(--white);
+            border: 1px solid var(--light-grey);
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-grid .gallery-item:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--dim-gold);
+        }
+        .gallery-grid .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .gallery-grid .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-grid .gallery-item .gallery-caption {
+            padding: 16px 20px 20px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+        .gallery-grid .gallery-item .gallery-caption small {
+            display: block;
+            font-weight: 400;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .gallery-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            background: var(--sky-blue);
+            color: var(--white);
+        }
+        .gallery-tag.traditional {
+            background: var(--dim-gold);
+            color: var(--text-primary);
+        }
+        .gallery-tag.modern {
+            background: var(--sky-blue);
+            color: var(--white);
+        }
+        .gallery-tag.city {
+            background: var(--text-primary);
+            color: var(--white);
+        }
+        .gallery-tag.tech {
+            background: #2D3748;
+            color: var(--white);
+        }
+
+        /* ========== LIGHTBOX ========== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 12000;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            padding: 20px;
+        }
+        .lightbox.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 900px;
+            max-height: 90vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            border-radius: 16px;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+            animation: zoomIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .lightbox-caption {
+            text-align: center;
+            color: var(--white);
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+        .lightbox-caption h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .lightbox-caption p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        .lightbox-prev,
+        .lightbox-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 28px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .lightbox-prev:hover,
+        .lightbox-next:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.05);
+        }
+        .lightbox-prev {
+            left: 20px;
+        }
+        .lightbox-next {
+            right: 20px;
+        }
+        @media (max-width: 640px) {
+            .lightbox-prev,
+            .lightbox-next {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            .lightbox-prev {
+                left: 10px;
+            }
+            .lightbox-next {
+                right: 10px;
+            }
+            .lightbox-close {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            .lightbox-caption h3 {
+                font-size: 18px;
+            }
+        }
+
+        /* ========== IMPACT ========== */
+        .impact-section {
+            padding: 120px 0;
+            background: var(--off-white);
+        }
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 28px;
+            margin-top: 48px;
+        }
+        .impact-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 36px 28px 32px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--light-grey);
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+            cursor: default;
+            transform-style: preserve-3d;
+            perspective: 600px;
+        }
+        .impact-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(135, 206, 235, 0.05), rgba(240, 217, 168, 0.05));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .impact-card:hover::after {
+            opacity: 1;
+        }
+        .impact-card:hover {
+            transform: translateY(-15px) rotateX(2deg);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--dim-gold);
+            background: var(--off-white);
+        }
+        .impact-card .impact-number {
+            font-size: clamp(36px, 4vw, 52px);
+            font-weight: 900;
+            color: var(--text-primary);
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+        .impact-card .impact-number .accent {
+            color: var(--sky-blue);
+        }
+        .impact-card .impact-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .impact-card .impact-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background: rgba(135, 206, 235, 0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s ease, background 0.4s ease;
+        }
+        .impact-card:hover .impact-icon {
+            transform: scale(1.1) rotate(-4deg);
+            background: rgba(135, 206, 235, 0.2);
+        }
+        .impact-card .impact-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--sky-blue);
+        }
+        .impact-card .placeholder-note {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-top: 10px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            opacity: 0.6;
+        }
+
+        /* ========== DOWNLOAD SECTION (App Download) ========== */
+        .download-section {
+            padding: 100px 0;
+            text-align: center;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(135, 206, 235, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+        .download-section .container {
+            position: relative;
+            z-index: 1;
+        }
+        .download-section .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 52px;
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 8px 40px rgba(135, 206, 235, 0.40);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .download-section .download-btn:hover {
+            transform: scale(1.08) translateY(-6px);
+            box-shadow: 0 16px 56px rgba(135, 206, 235, 0.55);
+        }
+        .download-section .download-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            animation: bounceDown 2s ease-in-out infinite;
+        }
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(4px);
+            }
+        }
+        .download-section .download-disclaimer {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 16px;
+            opacity: 0.7;
+        }
+
+        /* ========== CONTACT ========== */
+        .contact-section {
+            padding: 120px 0;
+            background: var(--off-white);
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 48px;
+            align-items: start;
+        }
+        .contact-info h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.8;
+            max-width: 440px;
+            margin-bottom: 28px;
+        }
+        .contact-social {
+            display: flex;
+            gap: 16px;
+        }
+        .contact-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--light-grey);
+            color: var(--text-secondary);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: var(--shadow-sm);
+        }
+        .contact-social a:hover {
+            transform: translateY(-6px) scale(1.05);
+            border-color: var(--sky-blue);
+            box-shadow: 0 8px 24px rgba(135, 206, 235, 0.20);
+            color: var(--sky-blue);
+        }
+        .contact-social a svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .contact-form {
+            background: var(--white);
+            padding: 40px 36px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--light-grey);
+            transition: box-shadow 0.4s ease;
+        }
+        .contact-form:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        .contact-form .form-group {
+            margin-bottom: 18px;
+        }
+        .contact-form label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid var(--light-grey);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: var(--font-primary);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            background: var(--white);
+            color: var(--text-primary);
+            outline: none;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 4px rgba(135, 206, 235, 0.12);
+            transform: scale(1.005);
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .contact-form .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--sky-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 4px 20px rgba(135, 206, 235, 0.30);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-form .submit-btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 8px 32px rgba(135, 206, 235, 0.45);
+        }
+        .contact-form .submit-btn .spinner {
+            display: none;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: var(--white);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        .contact-form .submit-btn.loading .spinner {
+            display: block;
+        }
+        .contact-form .submit-btn.loading .btn-text {
+            display: none;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--text-primary);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 48px 0 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: repeating-linear-gradient(90deg,
+                    var(--dim-gold) 0px,
+                    var(--dim-gold) 6px,
+                    transparent 6px,
+                    transparent 16px,
+                    var(--sky-blue) 16px,
+                    var(--sky-blue) 20px,
+                    transparent 20px,
+                    transparent 30px);
+            opacity: 0.3;
+            animation: slidePattern 8s linear infinite;
+        }
+        @keyframes slidePattern {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 40px 0;
+            }
+        }
+        .footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .footer-brand .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--sky-blue);
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 900;
+        }
+        .footer-brand span {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.3px;
+        }
+        .footer-brand small {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.6;
+            margin-left: 4px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .footer-social a:hover {
+            background: rgba(135, 206, 235, 0.15);
+            color: var(--sky-blue);
+            border-color: rgba(135, 206, 235, 0.2);
+            transform: translateY(-4px) scale(1.05);
+        }
+        .footer-social a svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .footer-lang {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .footer-lang .lang-btn {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            padding: 4px 12px;
+        }
+        .footer-lang .lang-btn.active {
+            color: var(--white);
+        }
+        .footer-lang .lang-btn::after {
+            background: var(--sky-blue);
+        }
+        .footer-bottom {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.5;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Scroll Animations */
+        .scroll-animate {
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .scroll-animate.is-visible {
+            opacity: 1;
+        }
+        .animate-fade-up {
+            transform: translateY(60px);
+        }
+        .animate-fade-up.is-visible {
+            transform: translateY(0);
+        }
+        .animate-fade-left {
+            transform: translateX(-60px);
+        }
+        .animate-fade-left.is-visible {
+            transform: translateX(0);
+        }
+        .animate-fade-right {
+            transform: translateX(60px);
+        }
+        .animate-fade-right.is-visible {
+            transform: translateX(0);
+        }
+        .animate-zoom-in {
+            transform: scale(0.8);
+        }
+        .animate-zoom-in.is-visible {
+            transform: scale(1);
+        }
+        .animate-stagger {
+            transition-delay: 0.15s;
+        }
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+        .delay-5 {
+            transition-delay: 0.5s;
+        }
+        .delay-6 {
+            transition-delay: 0.6s;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .header {
+                padding: 0 20px;
+            }
+            .header-logo {
+                font-size: 18px;
+            }
+            .header-logo .logo-mark {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            .header-actions .btn-login,
+            .header-actions .btn-signup,
+            .header-actions .btn-download-header {
+                display: none;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .story-body {
+                columns: 1;
+            }
+            .solutions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+            .impact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h1 {
+                font-size: clamp(40px, 8vw, 64px);
+            }
+            .landscape-leadership .image-grid {
+                grid-template-columns: 1fr;
+            }
+            .landscape-leadership .overlay-text {
+                bottom: 20px;
+                left: 20px;
+                font-size: 13px;
+                padding: 12px 20px;
+            }
+            .landscape-leadership .overlay-text strong {
+                font-size: 17px;
+            }
+            .quote-slide blockquote {
+                font-size: 22px;
+            }
+            .quote-slide blockquote::before {
+                font-size: 60px;
+                left: -20px;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            }
+            .influence-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .section {
+                padding: 64px 0;
+            }
+            .vision-section {
+                padding: 72px 0;
+            }
+            .story-section {
+                padding: 72px 0;
+            }
+            .solutions-section {
+                padding: 72px 0;
+            }
+            .gallery-section {
+                padding: 64px 0;
+            }
+            .impact-section {
+                padding: 72px 0;
+            }
+            .contact-section {
+                padding: 72px 0;
+            }
+            .influence-section {
+                padding: 64px 0;
+            }
+            .download-section {
+                padding: 64px 0;
+            }
+            .hero {
+                min-height: 92vh;
+            }
+            .hero h1 {
+                font-size: clamp(32px, 10vw, 44px);
+                letter-spacing: -0.5px;
+            }
+            .hero-sub {
+                font-size: 16px;
+            }
+            .hero-buttons .btn-primary,
+            .hero-buttons .btn-secondary,
+            .hero-buttons .btn-download-hero {
+                padding: 14px 28px;
+                font-size: 14px;
+                width: 100%;
+                justify-content: center;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+            .header {
+                padding: 0 16px;
+            }
+            .header-logo span:last-child {
+                display: none;
+            }
+            .impact-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .impact-card {
+                padding: 24px 16px 20px;
+            }
+            .impact-card .impact-number {
+                font-size: 28px;
+            }
+            .solutions-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .solution-card {
+                padding: 28px 24px 24px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            .gallery-grid .gallery-item img {
+                height: 160px;
+            }
+            .gallery-grid .gallery-item .gallery-caption {
+                padding: 12px 14px 16px;
+                font-size: 13px;
+            }
+            .influence-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .influence-card {
+                padding: 28px 24px 24px;
+            }
+            .contact-form {
+                padding: 28px 20px;
+            }
+            .footer .container {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .footer-lang {
+                justify-content: center;
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .mobile-nav-overlay a {
+                font-size: 22px;
+            }
+            .floating-icon {
+                display: none;
+            }
+            .vision-text {
+                font-size: 16px;
+            }
+            .story-body {
+                font-size: 15px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .contact-info h3 {
+                font-size: 22px;
+            }
+            .quote-section {
+                padding: 56px 0;
+            }
+            .quote-slide blockquote {
+                font-size: 18px;
+            }
+            .quote-slide blockquote::before {
+                font-size: 40px;
+                left: -10px;
+                top: -10px;
+            }
+            .landscape-leadership .overlay-text strong {
+                font-size: 16px;
+            }
+            .back-to-top {
+                bottom: 16px;
+                right: 16px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .back-to-top svg {
+                width: 18px;
+                height: 18px;
+            }
+            .signup-card {
+                padding: 32px 24px;
+            }
+            .signup-card h2 {
+                font-size: 22px;
+            }
+            .download-section .download-btn {
+                padding: 16px 32px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 320px;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .impact-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .impact-card {
+                padding: 18px 12px 16px;
+            }
+            .impact-card .impact-number {
+                font-size: 22px;
+            }
+            .impact-card .impact-label {
+                font-size: 12px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOADING SCREEN ===== -->
+    <div id="loader">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Loading</div>
+        <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+    </div>
+
+    <!-- ===== SCROLL PROGRESS ===== -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- ===== CUSTOM CURSOR ===== -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- ===== BACK TO TOP ===== -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <svg viewBox="0 0 24 24"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+    </button>
+
+    <!-- ===== SIGNUP POPUP ===== -->
+    <div class="signup-overlay" id="signupOverlay">
+        <div class="signup-card">
+            <button class="signup-close" id="signupClose">&times;</button>
+            <h2>🚀 Join MER Ethiopia</h2>
+            <p>Create your account to be part of Ethiopia's dairy revolution.</p>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPhone">Phone Number</label>
+                    <input type="tel" id="signupPhone" placeholder="+251 9XX XXX XXX" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="signupPasswordConfirm">Confirm Password</label>
+                    <input type="password" id="signupPasswordConfirm" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="signup-btn">Create Account →</button>
+            </form>
+            <div class="signup-footer">
+                Already have an account? <a id="signupLoginLink">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-prev" id="lightboxPrev">&#10094;</button>
+        <button class="lightbox-next" id="lightboxNext">&#10095;</button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightboxImg" />
+            <div class="lightbox-caption">
+                <h3 id="lightboxTitle"></h3>
+                <p id="lightboxDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HEADER (with Download Button) ===== -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="#" class="header-logo">
+                <span class="logo-mark">M</span>
+                <span>MER <small>Ethiopia</small></span>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#vision" data-i18n="nav_vision">Vision</a></li>
+                <li><a href="#influence" data-i18n="nav_influence">Ethiopia's Impact</a></li>
+                <li><a href="#story" data-i18n="nav_story">Story</a></li>
+                <li><a href="#solutions" data-i18n="nav_solutions">Solutions</a></li>
+                <li><a href="#gallery" data-i18n="nav_gallery">Gallery</a></li>
+                <li><a href="#impact" data-i18n="nav_impact">Impact</a></li>
+            </ul>
+
+            <div class="header-actions">
+                <div class="lang-switcher" id="desktopLangSwitcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <span class="lang-divider"></span>
+                    <button class="lang-btn" data-lang="am">አማ</button>
+                    <span class="lang-divider"></span>
+                    <button class="lang-btn" data-lang="om">Oro</button>
+                </div>
+                <a href="base.apk" class="btn-download-header" data-i18n="nav_download">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    <span>App</span>
+                </a>
+                <button class="btn-login" id="headerLoginBtn" data-i18n="nav_login">Log in</button>
+                <button class="btn-signup" id="headerSignupBtn" data-i18n="nav_signup">Sign up</button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MOBILE NAV ===== -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <a href="#vision" data-i18n="nav_vision">Vision</a>
+        <a href="#influence" data-i18n="nav_influence">Ethiopia's Impact</a>
+        <a href="#story" data-i18n="nav_story">Story</a>
+        <a href="#solutions" data-i18n="nav_solutions">Solutions</a>
+        <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+        <a href="#impact" data-i18n="nav_impact">Impact</a>
+        <div class="mobile-actions">
+            <a href="base.apk" class="btn-download-mobile">
+                <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;vertical-align:middle;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                Download App
+            </a>
+            <a class="btn-login-mobile" id="mobileLoginBtn">Log in</a>
+            <a class="btn-signup-mobile" id="mobileSignupBtn">Sign up</a>
+        </div>
+        <div class="mobile-lang">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="am">አማ</button>
+            <button class="lang-btn" data-lang="om">Oro</button>
+        </div>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&q=80');"></div>
+
+        <canvas id="particles-canvas"></canvas>
+
+        <div class="floating-icon"><svg viewBox="0 0 24 24"><path d="M21.5 6.5c-1.1 0-2.1.5-2.8 1.2l-1.9-1.3c.3-.6.5-1.3.5-2 0-2.2-1.8-4-4-4S9.3 2.2 9.3 4.4c0 .7.2 1.4.5 2L7.9 7.7C7.1 7 6.1 6.5 5 6.5c-2.2 0-4 1.8-4 4s1.8 4 4 4c1.8 0 3.3-1.2 3.8-2.8l2.1 1.4c-.2.5-.4 1.1-.4 1.7 0 2.2 1.8 4 4 4s4-1.8 4-4c0-.6-.1-1.2-.4-1.7l2.1-1.4c.5 1.6 2 2.8 3.8 2.8 2.2 0 4-1.8 4-4s-1.8-4-4-4zm-9.2 5.8l-2.8-1.9c.1-.4.2-.8.2-1.2s-.1-.8-.2-1.2l2.8-1.9c.6.6 1.4.9 2.2.9s1.6-.3 2.2-.9l2.8 1.9c-.1.4-.2.8-.2 1.2s.1.8.2 1.2l-2.8 1.9c-.6-.6-1.4-.9-2.2-.9s-1.6.3-2.2.9z"/></svg></div>
+        <div class="floating-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+        <div class="floating-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+        <div class="floating-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+        <div class="floating-icon"><svg viewBox="0 0 24 24"><path d="M21.5 6.5c-1.1 0-2.1.5-2.8 1.2l-1.9-1.3c.3-.6.5-1.3.5-2 0-2.2-1.8-4-4-4S9.3 2.2 9.3 4.4c0 .7.2 1.4.5 2L7.9 7.7C7.1 7 6.1 6.5 5 6.5c-2.2 0-4 1.8-4 4s1.8 4 4 4c1.8 0 3.3-1.2 3.8-2.8l2.1 1.4c-.2.5-.4 1.1-.4 1.7 0 2.2 1.8 4 4 4s4-1.8 4-4c0-.6-.1-1.2-.4-1.7l2.1-1.4c.5 1.6 2 2.8 3.8 2.8 2.2 0 4-1.8 4-4s-1.8-4-4-4z"/></svg></div>
+        <div class="floating-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+
+        <div class="hero-content">
+            <div class="hero-badge" data-i18n="hero_badge">🇪🇹 Ethiopia's Dairy Revolution</div>
+            <h1>
+                <span data-i18n="hero_h1_1">Enhancing Ethiopian</span><br>
+                <span class="highlight" data-i18n="hero_h1_2">Dairy Production</span>
+            </h1>
+            <div class="hero-sub" id="heroTyping" data-i18n="hero_sub">
+                Empowering farmers. Driving digital innovation. Building Africa's future.
+                <span class="typed-cursor"></span>
+            </div>
+            <div class="hero-buttons">
+                <button class="btn-primary" id="heroSignupBtn" data-i18n="hero_cta_primary">Join the Movement</button>
+                <a href="base.apk" class="btn-download-hero" data-i18n="hero_cta_download">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    Download App
+                </a>
+                <a href="#gallery" class="btn-secondary" data-i18n="hero_cta_gallery">Explore Gallery</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== VISION ===== -->
+    <section class="vision-section section" id="vision">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="vision_label">Our North Star</span>
+            <h2 class="section-title" data-i18n="vision_title">Vision &amp; <span class="highlight">Mission</span></h2>
+            <div class="vision-text" data-i18n="vision_text">
+                <p>We are <strong>MER</strong> — a bold startup with a big dream. We are committed to enhancing Ethiopian dairy production and accelerating the nation's journey toward digital excellence and industrial leadership.</p>
+                <p style="margin-top:16px;">Under the visionary guidance of Prime Minister Dr. Abiy Ahmed, Ethiopia is rapidly advancing. <strong>MER</strong> is proud to be an active driver of this transformation — blending modern technology, sustainable practices, and deep local passion to unlock the full potential of Ethiopia's dairy industry.</p>
+            </div>
+            <div class="vision-divider"></div>
+        </div>
+    </section>
+
+    <!-- ===== ETHIOPIA'S INFLUENCE ===== -->
+    <section class="influence-section section" id="influence">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="influence_label">Ethiopia's Footprint</span>
+            <h2 class="section-title" data-i18n="influence_title">Ethiopia in the <span class="highlight">Horn &amp; Africa</span></h2>
+            <p class="section-sub" data-i18n="influence_sub">A nation of ancient heritage, modern ambition, and growing influence across the continent and beyond.</p>
+
+            <div class="influence-grid">
+                <div class="influence-card scroll-animate animate-zoom-in delay-1">
+                    <div class="influence-icon">🌍</div>
+                    <h3 data-i18n="influence_1_title">The Cradle of Humanity</h3>
+                    <p data-i18n="influence_1_desc">Ethiopia is home to some of the oldest hominid fossils, including the 3.2-million-year-old Lucy. This deep heritage gives Ethiopia a unique cultural weight in the Horn of Africa and across the continent.</p>
+                </div>
+                <div class="influence-card scroll-animate animate-zoom-in delay-2">
+                    <div class="influence-icon">🏛️</div>
+                    <h3 data-i18n="influence_2_title">The Horn's Anchor</h3>
+                    <p data-i18n="influence_2_desc">As the most populous country in the Horn of Africa, Ethiopia plays a pivotal role in regional stability, trade, and diplomacy. Its influence extends from the Red Sea to the Great Lakes, shaping the future of East Africa.</p>
+                </div>
+                <div class="influence-card scroll-animate animate-zoom-in delay-3">
+                    <div class="influence-icon">📈</div>
+                    <h3 data-i18n="influence_3_title">Africa's Rising Star</h3>
+                    <p data-i18n="influence_3_desc">With one of the fastest-growing economies in Africa, Ethiopia is becoming a hub for manufacturing, technology, and agriculture. Its commitment to digital transformation positions it as a leader in the continent's fourth industrial revolution.</p>
+                </div>
+                <div class="influence-card scroll-animate animate-zoom-in delay-4">
+                    <div class="influence-icon">🤝</div>
+                    <h3 data-i18n="influence_4_title">Unity in Diversity</h3>
+                    <p data-i18n="influence_4_desc">Home to over 80 ethnic groups and languages, Ethiopia is a testament to unity in diversity. This cultural richness fuels creativity, resilience, and a spirit of innovation that inspires all of Africa.</p>
+                </div>
+                <div class="influence-card scroll-animate animate-zoom-in delay-5">
+                    <div class="influence-icon">🌾</div>
+                    <h3 data-i18n="influence_5_title">Agricultural Powerhouse</h3>
+                    <p data-i18n="influence_5_desc">Ethiopia is the largest livestock producer in Africa, with over 70 million cattle. The dairy sector alone holds immense potential to feed the nation, create jobs, and become a major export powerhouse.</p>
+                </div>
+                <div class="influence-card scroll-animate animate-zoom-in delay-6">
+                    <div class="influence-icon">💡</div>
+                    <h3 data-i18n="influence_6_title">The Digital Dawn</h3>
+                    <p data-i18n="influence_6_desc">With initiatives like "Digital Ethiopia 2025," the country is leapfrogging into the digital age. This is creating unprecedented opportunities for startups like MER to revolutionize traditional industries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== QUOTE SLIDER (with 9 quotes - 3 new from Dr. Abiy) ===== -->
+    <section class="quote-section">
+        <div class="quote-slider" id="quoteSlider">
+            <div class="quote-slide active" data-index="0">
+                <blockquote data-i18n="patriotic_quote_1">
+                    "Ethiopia is not just a country; it is an idea — a promise of resilience, unity, and boundless potential."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_1">
+                    — <strong>Prime Minister Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> A Nation on the Rise
+                </div>
+            </div>
+            <div class="quote-slide" data-index="1">
+                <blockquote data-i18n="patriotic_quote_2">
+                    "Our agriculture is our heritage, our technology is our future, and our people are our greatest asset."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_2">
+                    — <strong>Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Digital Ethiopia
+                </div>
+            </div>
+            <div class="quote-slide" data-index="2">
+                <blockquote data-i18n="patriotic_quote_3">
+                    "Together, we are building a future that honors our past and inspires the world."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_3">
+                    — <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> The New Horizon
+                </div>
+            </div>
+            <div class="quote-slide" data-index="3">
+                <blockquote data-i18n="patriotic_quote_4">
+                    "Our diversity is our strength, our unity is our power, and our hard work is our future."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_4">
+                    — <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Unity in Diversity
+                </div>
+            </div>
+            <div class="quote-slide" data-index="4">
+                <blockquote data-i18n="patriotic_quote_5">
+                    "We must build an Ethiopia that works for all, where no one is left behind."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_5">
+                    — <strong>Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Inclusive Growth
+                </div>
+            </div>
+            <div class="quote-slide" data-index="5">
+                <blockquote data-i18n="patriotic_quote_6">
+                    "The future belongs to those who believe in the beauty of their dreams, and we believe in Ethiopia."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_6">
+                    — <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> The Beauty of Dreams
+                </div>
+            </div>
+            <!-- NEW QUOTE 1 -->
+            <div class="quote-slide" data-index="6">
+                <blockquote data-i18n="patriotic_quote_7">
+                    "Ethiopia is a nation that refuses to be defined by its past, but rather by its ambitions for the future."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_7">
+                    — <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Defining Our Own Destiny
+                </div>
+            </div>
+            <!-- NEW QUOTE 2 -->
+            <div class="quote-slide" data-index="7">
+                <blockquote data-i18n="patriotic_quote_8">
+                    "We are not merely building roads and bridges; we are building a new Ethiopia — one of hope, dignity, and opportunity."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_8">
+                    — <strong>Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Building Hope
+                </div>
+            </div>
+            <!-- NEW QUOTE 3 -->
+            <div class="quote-slide" data-index="8">
+                <blockquote data-i18n="patriotic_quote_9">
+                    "Ethiopia's renaissance is not a slogan; it is a movement — a collective awakening of a proud and ancient people."
+                </blockquote>
+                <div class="quote-attribution" data-i18n="quote_attribution_9">
+                    — <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> The Renaissance
+                </div>
+            </div>
+        </div>
+        <div class="quote-dots" id="quoteDots">
+            <button class="quote-dot active" data-index="0"></button>
+            <button class="quote-dot" data-index="1"></button>
+            <button class="quote-dot" data-index="2"></button>
+            <button class="quote-dot" data-index="3"></button>
+            <button class="quote-dot" data-index="4"></button>
+            <button class="quote-dot" data-index="5"></button>
+            <button class="quote-dot" data-index="6"></button>
+            <button class="quote-dot" data-index="7"></button>
+            <button class="quote-dot" data-index="8"></button>
+        </div>
+    </section>
+
+    <!-- ===== LANDSCAPE & LEADERSHIP ===== -->
+    <section class="landscape-leadership">
+        <div class="image-grid">
+            <div class="landscape-img scroll-animate animate-zoom-in">
+                <div class="overlay-text">
+                    <strong data-i18n="landscape_title">Ethiopian Highlands</strong>
+                    <small data-i18n="landscape_sub">Where tradition meets tomorrow's agriculture</small>
+                </div>
+            </div>
+            <div class="city-img scroll-animate animate-zoom-in delay-2">
+                <div class="overlay-text">
+                    <strong data-i18n="city_title">Addis Ababa Skyline</strong>
+                    <small data-i18n="city_sub">The heart of Ethiopia's digital renaissance</small>
+                </div>
+            </div>
+        </div>
+        <div style="background:var(--text-primary);padding:40px 20px;text-align:center;border-top:3px solid var(--dim-gold);">
+            <div style="max-width:600px;margin:0 auto;background:rgba(255,255,255,0.03);border-radius:20px;padding:30px;border:1px solid rgba(255,255,255,0.06);">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--sky-blue);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--white);font-weight:900;box-shadow:0 0 40px rgba(135,206,235,0.2);">🇪🇹</div>
+                <h3 style="color:var(--white);font-size:20px;font-weight:700;" data-i18n="leadership_placeholder_title">H.E. Dr. Abiy Ahmed &amp; The New Ethiopia</h3>
+                <p style="color:rgba(255,255,255,0.6);font-size:14px;margin-top:8px;" data-i18n="leadership_placeholder_text">[Photo of H.E. Dr. Abiy Ahmed &amp; Addis Ababa Skyline — To be replaced with official assets]</p>
+                <div style="width:60px;height:2px;background:var(--dim-gold);margin:12px auto 0;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STORY ===== -->
+    <section class="story-section" id="story">
+        <div class="story-bg"></div>
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="story_label">Our Journey</span>
+            <h2 class="section-title" data-i18n="story_title">Our Story &amp; <span class="highlight">Ambition</span></h2>
+            <p class="section-sub" data-i18n="story_sub">A new chapter for Ethiopian dairy — rooted in heritage, powered by innovation.</p>
+            <div class="story-body" data-i18n="story_body">
+                <p class="dropcap">Ethiopia is rising. With unstoppable momentum and boundless potential, our nation stands at the dawn of a new era. Rooted in rich agricultural heritage and fueled by rapid growth in services and industry, Ethiopia is transforming under the bold and visionary leadership of Prime Minister Dr. Abiy Ahmed. The commitment to digitalize the nation has ignited a powerful movement — one that dreams of positioning Ethiopia as Africa's leading force in agro-industry and technology.</p>
+                <p>At MER, we are a startup with a big dream. We do not wish to merely observe this transformation. We choose to be an active architect of it. We are deeply committed to enhancing dairy production across Ethiopia. Dairy is far more than milk — it is nutrition for our children, sustainable income for millions of smallholder farmers, and a cornerstone for building a modern, self-reliant agro-industrial economy.</p>
+                <p>By blending cutting-edge digital technologies, sustainable farming practices, and world-class processing standards, MER is creating a new future for Ethiopian dairy. We are empowering farmers with smart tools, building efficient value chains, reducing losses, and transforming raw potential into premium, globally competitive dairy products.</p>
+                <p>We believe in an Ethiopia where innovation meets tradition — where smallholder farmers thrive through technology, where young people find opportunity in modern agriculture, and where the nation proudly stands as a beacon of progress across Africa.</p>
+                <p>This is our purpose. This is our passion. We are not just enhancing dairy production. We are helping to write a new chapter in Ethiopia's story — one of prosperity, innovation, and national pride. We are determined to leave a lasting fingerprint on this great nation's journey toward greatness.</p>
+                <p>Together with the people and government of Ethiopia, MER will help turn ambitious dreams into reality. A digitally empowered, industrially strong, and agriculturally prosperous Ethiopia — not just for today, but for generations to come. This is more than business. This is our contribution to a greater Ethiopia.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SOLUTIONS ===== -->
+    <section class="solutions-section section" id="solutions">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="solutions_label">What We Do</span>
+            <h2 class="section-title" data-i18n="solutions_title">Our <span class="highlight">Solutions</span></h2>
+            <p class="section-sub" data-i18n="solutions_sub">From pasture to plate — building a vertically integrated dairy ecosystem.</p>
+            <div class="solutions-grid">
+                <div class="solution-card scroll-animate animate-zoom-in delay-1">
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M21.5 6.5c-1.1 0-2.1.5-2.8 1.2l-1.9-1.3c.3-.6.5-1.3.5-2 0-2.2-1.8-4-4-4S9.3 2.2 9.3 4.4c0 .7.2 1.4.5 2L7.9 7.7C7.1 7 6.1 6.5 5 6.5c-2.2 0-4 1.8-4 4s1.8 4 4 4c1.8 0 3.3-1.2 3.8-2.8l2.1 1.4c-.2.5-.4 1.1-.4 1.7 0 2.2 1.8 4 4 4s4-1.8 4-4c0-.6-.1-1.2-.4-1.7l2.1-1.4c.5 1.6 2 2.8 3.8 2.8 2.2 0 4-1.8 4-4s-1.8-4-4-4zm-9.2 5.8l-2.8-1.9c.1-.4.2-.8.2-1.2s-.1-.8-.2-1.2l2.8-1.9c.6.6 1.4.9 2.2.9s1.6-.3 2.2-.9l2.8 1.9c-.1.4-.2.8-.2 1.2s.1.8.2 1.2l-2.8 1.9c-.6-.6-1.4-.9-2.2-.9s-1.6.3-2.2.9z"/></svg></div>
+                    <h3 data-i18n="solution_1_title">Dairy Cattle Fattening</h3>
+                    <p data-i18n="solution_1_desc">Premium beef production through advanced fattening techniques and veterinary care.</p>
+                    <span class="coming-soon-badge" style="background:var(--sky-blue);color:var(--white);" data-i18n="solution_active">Active</span>
+                </div>
+                <div class="solution-card scroll-animate animate-zoom-in delay-2">
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg></div>
+                    <h3 data-i18n="solution_2_title">Dairy Processing &amp; Products</h3>
+                    <p data-i18n="solution_2_desc">Transforming raw milk into high-quality, nutritious dairy goods for local and export markets.</p>
+                    <span class="coming-soon-badge" style="background:var(--sky-blue);color:var(--white);" data-i18n="solution_active">Active</span>
+                </div>
+                <div class="solution-card coming-soon scroll-animate animate-zoom-in delay-3">
+                    <div class="gold-ribbon" data-i18n="coming_soon">Coming Soon</div>
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+                    <h3 data-i18n="solution_3_title">Poultry &amp; Egg Production</h3>
+                    <p data-i18n="solution_3_desc">High-yield chicken farming to boost protein availability.</p>
+                    <span class="coming-soon-badge" data-i18n="coming_soon">Coming Soon</span>
+                </div>
+                <div class="solution-card coming-soon scroll-animate animate-zoom-in delay-4">
+                    <div class="gold-ribbon" data-i18n="coming_soon">Coming Soon</div>
+                    <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+                    <h3 data-i18n="solution_4_title">Crop Farming Solutions</h3>
+                    <p data-i18n="solution_4_desc">Future-ready sustainable farming to complement our livestock value chain.</p>
+                    <span class="coming-soon-badge" data-i18n="coming_soon">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY ===== -->
+    <section class="gallery-section" id="gallery">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="gallery_label">Visual Journey</span>
+            <h2 class="section-title" data-i18n="gallery_title">Tradition Meets <span class="highlight">Innovation</span></h2>
+            <p class="section-sub" data-i18n="gallery_sub">From time-honoured farming methods to cutting-edge agricultural technology — Ethiopia's dairy evolution in pictures.</p>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images injected by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== IMPACT ===== -->
+    <section class="impact-section section" id="impact">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="impact_label">Our Progress</span>
+            <h2 class="section-title" data-i18n="impact_title">Making <span class="highlight">Impact</span></h2>
+            <p class="section-sub" data-i18n="impact_sub">Measurable milestones on our journey to transform Ethiopian dairy.</p>
+            <div class="impact-grid">
+                <div class="impact-card scroll-animate animate-zoom-in delay-1">
+                    <div class="impact-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+                    <div class="impact-number"><span class="accent counter" data-target="1200">0</span><span>+</span></div>
+                    <div class="impact-label" data-i18n="impact_1_label">Empowered Farmers</div>
+                    <div class="placeholder-note" data-i18n="placeholder_note">— placeholder —</div>
+                </div>
+                <div class="impact-card scroll-animate animate-zoom-in delay-2">
+                    <div class="impact-icon"><svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg></div>
+                    <div class="impact-number"><span class="accent counter" data-target="5">0</span><span>M+</span></div>
+                    <div class="impact-label" data-i18n="impact_2_label">Milk Processed (Liters)</div>
+                    <div class="placeholder-note" data-i18n="placeholder_note">— placeholder —</div>
+                </div>
+                <div class="impact-card scroll-animate animate-zoom-in delay-3">
+                    <div class="impact-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+                    <div class="impact-number"><span class="accent counter" data-target="350">0</span><span>+</span></div>
+                    <div class="impact-label" data-i18n="impact_3_label">Community Jobs</div>
+                    <div class="placeholder-note" data-i18n="placeholder_note">— placeholder —</div>
+                </div>
+                <div class="impact-card scroll-animate animate-zoom-in delay-4">
+                    <div class="impact-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg></div>
+                    <div class="impact-number"><span class="accent counter" data-target="40">0</span><span>%</span></div>
+                    <div class="impact-label" data-i18n="impact_4_label">Reduction in Waste</div>
+                    <div class="placeholder-note" data-i18n="placeholder_note">— placeholder —</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DOWNLOAD SECTION (App Download) ===== -->
+    <section class="download-section section" id="download">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="download_label">Get the App</span>
+            <h2 class="section-title" data-i18n="download_title">Take <span class="highlight">MER</span> with You.</h2>
+            <p class="section-sub" data-i18n="download_sub">Download the MER Ethiopia app to track livestock health, manage your farm, and access real-time market prices.</p>
+            <a href="base.apk" class="download-btn" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zm-1-4l-1.41-1.41L13 12.17V4h-2v8.17L8.41 9.59 7 11l5 5 5-5z"/></svg>
+                <span data-i18n="download_btn">Download APK</span>
+            </a>
+            <p class="download-disclaimer" data-i18n="download_disclaimer">* Available on APKPure and other trusted stores. Official Play Store listing coming soon.</p>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="contact-section section" id="contact">
+        <div class="container scroll-animate animate-fade-up">
+            <span class="section-label" data-i18n="contact_label">Get in Touch</span>
+            <h2 class="section-title" data-i18n="contact_title">Join the <span class="highlight">Movement</span></h2>
+            <p class="section-sub" data-i18n="contact_sub">Be part of Ethiopia's dairy revolution. Reach out and let's build the future together.</p>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3 data-i18n="contact_info_title">Let's Connect</h3>
+                    <p data-i18n="contact_info_text">Whether you're a farmer, investor, or partner — we'd love to hear from you. Together, we can transform Ethiopian agriculture.</p>
+                    <div class="contact-social">
+                        <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                        <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="fullName" data-i18n="form_name">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" data-i18n="form_email">Email Address</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" data-i18n="form_phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="+251 9XX XXX XXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="message" data-i18n="form_message">Message</label>
+                        <textarea id="message" placeholder="Tell us how you'd like to get involved..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text" data-i18n="form_submit">Send Message</span>
+                        <span class="spinner"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand">
+                <span class="logo-mark">M</span>
+                <span>MER <small>Ethiopia</small></span>
+            </div>
+            <div class="footer-social">
+                <a href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+                <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            </div>
+            <div class="footer-lang" id="footerLangSwitcher">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <span class="lang-divider" style="background:rgba(255,255,255,0.15);"></span>
+                <button class="lang-btn" data-lang="am">አማ</button>
+                <span class="lang-divider" style="background:rgba(255,255,255,0.15);"></span>
+                <button class="lang-btn" data-lang="om">Oro</button>
+            </div>
+        </div>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; <span id="footerYear">2026</span> MER Ethiopia. All rights reserved. &mdash; Built with pride for a greater Ethiopia.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ================================================================
+            // GALLERY DATA (12 images - replace src with your Cloudinary URLs)
+            // ================================================================
+            const galleryData = [{
+                id: 'traditional-farming-1',
+                src: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop',
+                title: 'Traditional Farming',
+                desc: 'Ploughing with oxen in the Ethiopian highlands',
+                tag: 'traditional'
+            }, {
+                id: 'traditional-farming-2',
+                src: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=600&h=400&fit=crop',
+                title: 'Traditional Farming',
+                desc: 'Rural landscape with traditional homesteads',
+                tag: 'traditional'
+            }, {
+                id: 'modern-farming-1',
+                src: 'https://images.unsplash.com/photo-1592982537447-6f2a6a0a7f9d?w=600&h=400&fit=crop',
+                title: 'Modern Farming',
+                desc: 'Large-scale mechanised farming with tractors',
+                tag: 'modern'
+            }, {
+                id: 'modern-farming-2',
+                src: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=400&fit=crop',
+                title: 'Modern Farming',
+                desc: 'Irrigation systems and greenhouses',
+                tag: 'modern'
+            }, {
+                id: 'traditional-dairy-1',
+                src: 'https://images.unsplash.com/photo-1532710093739-9470acb6b8f9?w=600&h=400&fit=crop',
+                title: 'Traditional Dairy',
+                desc: 'Hand-milking and local dairy practices',
+                tag: 'traditional'
+            }, {
+                id: 'traditional-dairy-2',
+                src: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9c2a6?w=600&h=400&fit=crop',
+                title: 'Traditional Dairy',
+                desc: 'Local milk containers and smallholder farmers',
+                tag: 'traditional'
+            }, {
+                id: 'modern-dairy-1',
+                src: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&h=400&fit=crop',
+                title: 'Modern Dairy',
+                desc: 'Automated milking parlours and high-tech farms',
+                tag: 'modern'
+            }, {
+                id: 'modern-dairy-2',
+                src: 'https://images.unsplash.com/photo-1584735935682-2f2b69d9dfa3?w=600&h=400&fit=crop',
+                title: 'Modern Dairy',
+                desc: 'Pasteurisation plants and packaged dairy products',
+                tag: 'modern'
+            }, {
+                id: 'addis-ababa-1',
+                src: 'https://images.unsplash.com/photo-1562707948-107b8524ae2f?w=600&h=400&fit=crop',
+                title: 'Addis Ababa',
+                desc: 'Modern skyline and urban development',
+                tag: 'city'
+            }, {
+                id: 'addis-ababa-2',
+                src: 'https://images.unsplash.com/photo-1578389784255-8e11966df65b?w=600&h=400&fit=crop',
+                title: 'Addis Ababa',
+                desc: 'Bustling streets and vibrant city life',
+                tag: 'city'
+            }, {
+                id: 'tech-1',
+                src: 'https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=600&h=400&fit=crop',
+                title: 'Technology & Innovation',
+                desc: 'Digital devices and agri-tech tools',
+                tag: 'tech'
+            }, {
+                id: 'tech-2',
+                src: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop',
+                title: 'Technology & Innovation',
+                desc: 'Data dashboards and digital transformation',
+                tag: 'tech'
+            }];
+
+            // ================================================================
+            // TRANSLATIONS
+            // ================================================================
+            const translations = {
+                en: {
+                    nav_vision: 'Vision',
+                    nav_influence: "Ethiopia's Impact",
+                    nav_story: 'Story',
+                    nav_solutions: 'Solutions',
+                    nav_gallery: 'Gallery',
+                    nav_impact: 'Impact',
+                    nav_download: 'App',
+                    nav_login: 'Log in',
+                    nav_signup: 'Sign up',
+                    hero_badge: '🇪🇹 Ethiopia\'s Dairy Revolution',
+                    hero_h1_1: 'Enhancing Ethiopian',
+                    hero_h1_2: 'Dairy Production',
+                    hero_sub: 'Empowering farmers. Driving digital innovation. Building Africa\'s future.',
+                    hero_cta_primary: 'Join the Movement',
+                    hero_cta_download: 'Download App',
+                    hero_cta_gallery: 'Explore Gallery',
+                    vision_label: 'Our North Star',
+                    vision_title: 'Vision & Mission',
+                    vision_text: '<p>We are <strong>MER</strong> — a bold startup with a big dream. We are committed to enhancing Ethiopian dairy production and accelerating the nation\'s journey toward digital excellence and industrial leadership.</p><p style="margin-top:16px;">Under the visionary guidance of Prime Minister Dr. Abiy Ahmed, Ethiopia is rapidly advancing. <strong>MER</strong> is proud to be an active driver of this transformation — blending modern technology, sustainable practices, and deep local passion to unlock the full potential of Ethiopia\'s dairy industry.</p>',
+                    influence_label: "Ethiopia's Footprint",
+                    influence_title: 'Ethiopia in the Horn & Africa',
+                    influence_sub: 'A nation of ancient heritage, modern ambition, and growing influence across the continent and beyond.',
+                    influence_1_title: 'The Cradle of Humanity',
+                    influence_1_desc: 'Ethiopia is home to some of the oldest hominid fossils, including the 3.2-million-year-old Lucy. This deep heritage gives Ethiopia a unique cultural weight in the Horn of Africa and across the continent.',
+                    influence_2_title: "The Horn's Anchor",
+                    influence_2_desc: 'As the most populous country in the Horn of Africa, Ethiopia plays a pivotal role in regional stability, trade, and diplomacy. Its influence extends from the Red Sea to the Great Lakes, shaping the future of East Africa.',
+                    influence_3_title: "Africa's Rising Star",
+                    influence_3_desc: 'With one of the fastest-growing economies in Africa, Ethiopia is becoming a hub for manufacturing, technology, and agriculture. Its commitment to digital transformation positions it as a leader in the continent\'s fourth industrial revolution.',
+                    influence_4_title: 'Unity in Diversity',
+                    influence_4_desc: 'Home to over 80 ethnic groups and languages, Ethiopia is a testament to unity in diversity. This cultural richness fuels creativity, resilience, and a spirit of innovation that inspires all of Africa.',
+                    influence_5_title: 'Agricultural Powerhouse',
+                    influence_5_desc: 'Ethiopia is the largest livestock producer in Africa, with over 70 million cattle. The dairy sector alone holds immense potential to feed the nation, create jobs, and become a major export powerhouse.',
+                    influence_6_title: 'The Digital Dawn',
+                    influence_6_desc: 'With initiatives like "Digital Ethiopia 2025," the country is leapfrogging into the digital age. This is creating unprecedented opportunities for startups like MER to revolutionize traditional industries.',
+                    patriotic_quote_1: '"Ethiopia is not just a country; it is an idea — a promise of resilience, unity, and boundless potential."',
+                    quote_attribution_1: '— <strong>Prime Minister Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> A Nation on the Rise',
+                    patriotic_quote_2: '"Our agriculture is our heritage, our technology is our future, and our people are our greatest asset."',
+                    quote_attribution_2: '— <strong>Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Digital Ethiopia',
+                    patriotic_quote_3: '"Together, we are building a future that honors our past and inspires the world."',
+                    quote_attribution_3: '— <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> The New Horizon',
+                    patriotic_quote_4: '"Our diversity is our strength, our unity is our power, and our hard work is our future."',
+                    quote_attribution_4: '— <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Unity in Diversity',
+                    patriotic_quote_5: '"We must build an Ethiopia that works for all, where no one is left behind."',
+                    quote_attribution_5: '— <strong>Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Inclusive Growth',
+                    patriotic_quote_6: '"The future belongs to those who believe in the beauty of their dreams, and we believe in Ethiopia."',
+                    quote_attribution_6: '— <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> The Beauty of Dreams',
+                    patriotic_quote_7: '"Ethiopia is a nation that refuses to be defined by its past, but rather by its ambitions for the future."',
+                    quote_attribution_7: '— <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Defining Our Own Destiny',
+                    patriotic_quote_8: '"We are not merely building roads and bridges; we are building a new Ethiopia — one of hope, dignity, and opportunity."',
+                    quote_attribution_8: '— <strong>Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> Building Hope',
+                    patriotic_quote_9: '"Ethiopia\'s renaissance is not a slogan; it is a movement — a collective awakening of a proud and ancient people."',
+                    quote_attribution_9: '— <strong>PM Dr. Abiy Ahmed</strong> <span style="opacity:0.5;">|</span> The Renaissance',
+                    landscape_title: 'Ethiopian Highlands',
+                    landscape_sub: 'Where tradition meets tomorrow\'s agriculture',
+                    city_title: 'Addis Ababa Skyline',
+                    city_sub: 'The heart of Ethiopia\'s digital renaissance',
+                    leadership_placeholder_title: 'H.E. Dr. Abiy Ahmed & The New Ethiopia',
+                    leadership_placeholder_text: '[Photo of H.E. Dr. Abiy Ahmed & Addis Ababa Skyline — To be replaced with official assets]',
+                    story_label: 'Our Journey',
+                    story_title: 'Our Story & Ambition',
+                    story_sub: 'A new chapter for Ethiopian dairy — rooted in heritage, powered by innovation.',
+                    story_body: '<p class="dropcap">Ethiopia is rising. With unstoppable momentum and boundless potential, our nation stands at the dawn of a new era. Rooted in rich agricultural heritage and fueled by rapid growth in services and industry, Ethiopia is transforming under the bold and visionary leadership of Prime Minister Dr. Abiy Ahmed. The commitment to digitalize the nation has ignited a powerful movement — one that dreams of positioning Ethiopia as Africa\'s leading force in agro-industry and technology.</p><p>At MER, we are a startup with a big dream. We do not wish to merely observe this transformation. We choose to be an active architect of it. We are deeply committed to enhancing dairy production across Ethiopia. Dairy is far more than milk — it is nutrition for our children, sustainable income for millions of smallholder farmers, and a cornerstone for building a modern, self-reliant agro-industrial economy.</p><p>By blending cutting-edge digital technologies, sustainable farming practices, and world-class processing standards, MER is creating a new future for Ethiopian dairy. We are empowering farmers with smart tools, building efficient value chains, reducing losses, and transforming raw potential into premium, globally competitive dairy products.</p><p>We believe in an Ethiopia where innovation meets tradition — where smallholder farmers thrive through technology, where young people find opportunity in modern agriculture, and where the nation proudly stands as a beacon of progress across Africa.</p><p>This is our purpose. This is our passion. We are not just enhancing dairy production. We are helping to write a new chapter in Ethiopia\'s story — one of prosperity, innovation, and national pride. We are determined to leave a lasting fingerprint on this great nation\'s journey toward greatness.</p><p>Together with the people and government of Ethiopia, MER will help turn ambitious dreams into reality. A digitally empowered, industrially strong, and agriculturally prosperous Ethiopia — not just for today, but for generations to come. This is more than business. This is our contribution to a greater Ethiopia.</p>',
+                    solutions_label: 'What We Do',
+                    solutions_title: 'Our Solutions',
+                    solutions_sub: 'From pasture to plate — building a vertically integrated dairy ecosystem.',
+                    solution_1_title: 'Dairy Cattle Fattening',
+                    solution_1_desc: 'Premium beef production through advanced fattening techniques and veterinary care.',
+                    solution_2_title: 'Dairy Processing & Products',
+                    solution_2_desc: 'Transforming raw milk into high-quality, nutritious dairy goods for local and export markets.',
+                    solution_3_title: 'Poultry & Egg Production',
+                    solution_3_desc: 'High-yield chicken farming to boost protein availability.',
+                    solution_4_title: 'Crop Farming Solutions',
+                    solution_4_desc: 'Future-ready sustainable farming to complement our livestock value chain.',
+                    solution_active: 'Active',
+                    coming_soon: 'Coming Soon',
+                    gallery_label: 'Visual Journey',
+                    gallery_title: 'Tradition Meets Innovation',
+                    gallery_sub: 'From time-honoured farming methods to cutting-edge agricultural technology — Ethiopia\'s dairy evolution in pictures.',
+                    impact_label: 'Our Progress',
+                    impact_title: 'Making Impact',
+                    impact_sub: 'Measurable milestones on our journey to transform Ethiopian dairy.',
+                    impact_1_value: '1,200',
+                    impact_1_label: 'Empowered Farmers',
+                    impact_2_value: '5M',
+                    impact_2_label: 'Milk Processed (Liters)',
+                    impact_3_value: '350',
+                    impact_3_label: 'Community Jobs',
+                    impact_4_value: '40%',
+                    impact_4_label: 'Reduction in Waste',
+                    placeholder_note: '— placeholder —',
+                    download_label: 'Get the App',
+                    download_title: 'Take MER with You.',
+                    download_sub: 'Download the MER Ethiopia app to track livestock health, manage your farm, and access real-time market prices.',
+                    download_btn: 'Download APK',
+                    download_disclaimer: '* Available on APKPure and other trusted stores. Official Play Store listing coming soon.',
+                    contact_label: 'Get in Touch',
+                    contact_title: 'Join the Movement',
+                    contact_sub: 'Be part of Ethiopia\'s dairy revolution. Reach out and let\'s build the future together.',
+                    contact_info_title: 'Let\'s Connect',
+                    contact_info_text: 'Whether you\'re a farmer, investor, or partner — we\'d love to hear from you. Together, we can transform Ethiopian agriculture.',
+                    form_name: 'Full Name',
+                    form_email: 'Email Address',
+                    form_phone: 'Phone Number',
+                    form_message: 'Message',
+                    form_submit: 'Send Message',
+                },
+                am: {
+                    nav_vision: '[አማ] ራዕይ',
+                    nav_influence: '[አማ] የኢትዮጵያ ተጽዕኖ',
+                    nav_story: '[አማ] ታሪክ',
+                    nav_solutions: '[አማ] መፍትሄዎች',
+                    nav_gallery: '[አማ] ማሳያ',
+                    nav_impact: '[አማ] ተጽዕኖ',
+                    nav_download: '[አማ] መተግበሪያ',
+                    nav_login: '[አማ] ግባ',
+                    nav_signup: '[አማ] ይመዝገቡ',
+                    hero_badge: '[አማ] የኢትዮጵያ የወተት አብዮት',
+                    hero_h1_1: '[አማ] የኢትዮጵያን ማሳደግ',
+                    hero_h1_2: '[አማ] የወተት ምርት',
+                    hero_sub: '[አማ] ገበሬዎችን ማብቃት። ዲጂታል ፈጠራን ማራመድ። የአፍሪካን የወደፊት ህልም መገንባት።',
+                    hero_cta_primary: '[አማ] እንቅስቃሴውን ይቀላቀሉ',
+                    hero_cta_download: '[አማ] መተግበሪያ ያውርዱ',
+                    hero_cta_gallery: '[አማ] ማሳያ ያስሱ',
+                    vision_label: '[አማ] የእኛ መሪ ኮከብ',
+                    vision_title: '[አማ] ራዕይ እና ተልዕኮ',
+                    vision_text: '<p>[አማ] እኛ <strong>MER</strong> ነን — ትልቅ ህልም ያለው ጀማሪ ኩባንያ። የኢትዮጵያን የወተት ምርት ለማሳደግ እና የሀገሪቱን ጉዞ ወደ ዲጂታል ልህቀት እና የኢንዱስትሪ መሪነት ለማፋጠን ቆርጠን ተነስተናል።</p><p style="margin-top:16px;">[አማ] በጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ የራዕይ መሪነት ኢትዮጵያ በፍጥነት እየገሰገሰች ነው። <strong>MER</strong> የዚህን ለውጥ ንቁ አሽከርካሪ በመሆን ኩራት ይሰማዋል — ዘመናዊ ቴክኖሎጂን፣ ዘላቂ ተግባራትን እና ጥልቅ የአካባቢ ፍቅርን በማጣመር የኢትዮጵያን የወተት ኢንዱስትሪ አቅም ሙሉ በሙሉ ለመክፈት።</p>',
+                    influence_label: '[አማ] የኢትዮጵያ አሻራ',
+                    influence_title: '[አማ] ኢትዮጵያ በቀንድ እና በአፍሪካ',
+                    influence_sub: '[አማ] የጥንት ቅርስ፣ የዘመናዊ ምኞት እና በአህጉሪቱ እያደገ ያለ ተጽዕኖ ያላት ሀገር።',
+                    influence_1_title: '[አማ] የሰው ልጅ መገኛ',
+                    influence_1_desc: '[አማ] ኢትዮጵያ 3.2 ሚሊዮን ዓመት ዕድሜ ያለውን ሉሲን ጨምሮ ጥንታዊ የሆሚኒድ ቅሪተ አካላት መኖሪያ ናት። ይህ ጥልቅ ቅርስ ለኢትዮጵያ በቀንድ አፍሪካ እና በአህጉሪቱ ልዩ ባህላዊ ክብደት ይሰጣታል።',
+                    influence_2_title: '[አማ] የቀንዱ መልህቅ',
+                    influence_2_desc: '[አማ] በቀንድ አፍሪካ እጅግ ብዙ ህዝብ ያላት ሀገር እንደመሆኗ፣ ኢትዮጵያ በክልላዊ መረጋጋት፣ ንግድ እና ዲፕሎማሲ ውስጥ ወሳኝ ሚና ትጫወታለች። ተጽዕኖዋ ከቀይ ባህር እስከ ታላላቅ ሀይቆች ድረስ ይዘልቃል፣ የምስራቅ አፍሪካን የወደፊት ህልም ይቀርፃል።',
+                    influence_3_title: '[አማ] የአፍሪካ እያደገ ያለ ኮከብ',
+                    influence_3_desc: '[አማ] በአፍሪካ በፍጥነት እያደጉ ካሉ ኢኮኖሚዎች አንዷ እንደመሆኗ፣ ኢትዮጵያ ለማኑፋክቸሪንግ፣ ቴክኖሎጂ እና ግብርና መሀል እየሆነች ነው። ለዲጂታል ለውጥ ያላት ቁርጠኝነት በአህጉሪቱ አራተኛው የኢንዱስትሪ አብዮት መሪ አድርጎ ያስቀምጣታል።',
+                    influence_4_title: '[አማ] በልዩነት አንድነት',
+                    influence_4_desc: '[አማ] ከ80 በላይ ብሄረሰቦች እና ቋንቋዎች መኖሪያ የሆነችው ኢትዮጵያ በልዩነት አንድነት ማሳያ ናት። ይህ ባህላዊ ሀብት መላውን አፍሪካ የሚያነሳሳ ፈጠራን፣ የመቋቋም ችሎታን እና የፈጠራ መንፈስን ያጎለብታል።',
+                    influence_5_title: '[አማ] የግብርና ሃይል',
+                    influence_5_desc: '[አማ] ኢትዮጵያ ከ70 ሚሊዮን በላይ ከብቶች ያሏት በአፍሪካ ትልቁ የእንስሳት አምራች ናት። የወተት ዘርፉ ብቻውን ሀገሪቱን ለመመገብ፣ ስራዎችን ለመፍጠር እና ትልቅ የኤክስፖርት ሃይል ለመሆን ከፍተኛ አቅም አለው።',
+                    influence_6_title: '[አማ] ዲጂታል ጧት',
+                    influence_6_desc: '[አማ] እንደ "ዲጂታል ኢትዮጵያ 2025" ባሉ ተነሳሽነቶች፣ ሀገሪቱ ወደ ዲጂታል ዘመን እየገባች ነው። ይህ እንደ MER ያሉ ጀማሪ ኩባንያዎች ባህላዊ ኢንዱስትሪዎችን ለማሻሻል ከዚህ በፊት ታይቶ የማይታወቅ እድሎችን እየፈጠረ ነው።',
+                    patriotic_quote_1: '[አማ] "ኢትዮጵያ ሀገር ብቻ አይደለችም፤ ሀሳብ ናት — የመቋቋም፣ የአንድነት እና ሰፊ አቅም ተስፋ።"',
+                    quote_attribution_1: '— <strong>[አማ] ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] ብሔር በመነሳት ላይ',
+                    patriotic_quote_2: '[አማ] "ግብርናችን ቅርሳችን ነው፣ ቴክኖሎጂያችን የወደፊታችን ነው፣ ህዝባችንም ታላቅ ሀብታችን ነው።"',
+                    quote_attribution_2: '— <strong>[አማ] ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] ዲጂታል ኢትዮጵያ',
+                    patriotic_quote_3: '[አማ] "አብረን፣ ያለፈውን የሚያከብር እና ዓለምን የሚያነሳሳ የወደፊት ህልም እየገነባን ነው።"',
+                    quote_attribution_3: '— <strong>[አማ] ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] አዲስ አድማስ',
+                    patriotic_quote_4: '[አማ] "ልዩነታችን ጥንካሬያችን ነው፣ አንድነታችን ሀይላችን ነው፣ ትጋታችንም የወደፊታችን ነው።"',
+                    quote_attribution_4: '— <strong>[አማ] ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] በልዩነት አንድነት',
+                    patriotic_quote_5: '[አማ] "ሁሉንም የሚሰራ ኢትዮጵያ መገንባት አለብን፣ ማንም ወደ ኋላ የማይቀርበት።"',
+                    quote_attribution_5: '— <strong>[አማ] ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] አቀፍ እድገት',
+                    patriotic_quote_6: '[አማ] "የወደፊቱ በህልማቸው ውበት ለሚያምኑ ነው፣ እኛም በኢትዮጵያ እናምናለን።"',
+                    quote_attribution_6: '— <strong>[አማ] ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] የህልም ውበት',
+                    patriotic_quote_7: '[አማ] "ኢትዮጵያ በታሪኳ ሳይሆን ለወደፊት ባላት ምኞት መገለጽ የምትፈልግ ሀገር ናት።"',
+                    quote_attribution_7: '— <strong>[አማ] ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] የራሳችንን እጣ ፈንታ መወሰን',
+                    patriotic_quote_8: '[አማ] "መንገዶችን እና ድልድዮችን ብቻ አይደለም የምንሰራው፤ አዲስ ኢትዮጵያ እየሰራን ነው — ተስፋ፣ ክብር እና ዕድል ያላት።"',
+                    quote_attribution_8: '— <strong>[አማ] ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] ተስፋ መገንባት',
+                    patriotic_quote_9: '[አማ] "የኢትዮጵያ ህዳሴ መፈክር አይደለም፤ እንቅስቃሴ ነው — የኩራት እና የጥንት ህዝብ የጋራ መነቃቃት።"',
+                    quote_attribution_9: '— <strong>[አማ] ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ</strong> <span style="opacity:0.5;">|</span> [አማ] ህዳሴ',
+                    landscape_title: '[አማ] የኢትዮጵያ ደጋማ ቦታዎች',
+                    landscape_sub: '[አማ] ትውፊት ከነገው ግብርና ጋር የሚገናኝበት',
+                    city_title: '[አማ] የአዲስ አበባ ሰማይ መስመር',
+                    city_sub: '[አማ] የኢትዮጵያ ዲጂታል ህዳሴ ልብ',
+                    leadership_placeholder_title: '[አማ] የበላይ ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ እና አዲሷ ኢትዮጵያ',
+                    leadership_placeholder_text: '[አማ] የበላይ ጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ እና የአዲስ አበባ ሰማይ መስመር ፎቶ — በኦፊሴላዊ ሀብቶች ይተካል]',
+                    story_label: '[አማ] ጉዞአችን',
+                    story_title: '[አማ] ታሪካችን እና ምኞታችን',
+                    story_sub: '[አማ] ለኢትዮጵያ ወተት አዲስ ምዕራፍ — በቅርስ የተመሰረተ፣ በፈጠራ የተጎለበተ።',
+                    story_body: '<p class="dropcap">[አማ] ኢትዮጵያ እየተነሳች ነው። በማይታገድ እንቅስቃሴ እና ሰፊ አቅም፣ ሀገራችን በአዲስ ዘመን ደውላለች። በበለጸገ የግብርና ቅርስ ላይ የተመሰረተች እና በአገልግሎት እና በኢንዱስትሪ ፈጣን እድገት የተጫነች፣ ኢትዮጵያ በጠቅላይ ሚኒስትር ዶ/ር ዐቢይ አሕመድ ራዕይ እና ልባም አመራር እየተለወጠች ነው።</p><p>[አማ] በMER፣ እኛ ትልቅ ህልም ያለው ጀማሪ ኩባንያ ነን። ይህን ለውጥ በቀላሉ ለማየት አንፈልግም። የእሱ ንቁ መሐንዲስ ለመሆን እንመርጣለን። በመላው ኢትዮጵያ የወተት ምርትን ለማሳደግ ቆርጠን ተነስተናል።</p><p>[አማ] ዘመናዊ ዲጂታል ቴክኖሎጂዎችን፣ ዘላቂ የእርሻ ልምዶችን እና የዓለም ደረጃ የማቀነባበሪያ ደረጃዎችን በማጣመር፣ MER ለኢትዮጵያ ወተት አዲስ የወደፊት ህልም እየፈጠረ ነው።</p><p>[አማ] ፈጠራ ከትውፊት ጋር በሚገናኝበት — አነስተኛ ገበሬዎች በቴክኖሎጂ የሚበለጽጉበት፣ ወጣቶች በዘመናዊ ግብርና ውስጥ ዕድል የሚያገኙበት፣ እና ሀገሪቱ በመላው አፍሪካ የእድገት ምልክት ሆና የምትቆምበትን ኢትዮጵያ እናምናለን።</p><p>[አማ] ይህ ዓላማችን ነው። ይህ ፍቅራችን ነው። የወተት ምርትን እያሳደግን አይደለም። በኢትዮጵያ ታሪክ ውስጥ አዲስ ምዕራፍ ለመጻፍ እየረዳን ነው — የብልጽግና፣ የፈጠራ እና የብሔራዊ ኩራት ምዕራፍ።</p><p>[አማ] ከኢትዮጵያ ህዝብ እና መንግስት ጋር በመሆን፣ MER ህልሞችን ወደ እውነታ ለመቀየር ይረዳል። ዲጂታል የተጎለበተች፣ በኢንዱስትሪ ጠንካራ እና በግብርና የበለጸገች ኢትዮጵያ — ለዛሬ ብቻ ሳይሆን ለመጪው ትውልድም ጭምር።</p>',
+                    solutions_label: '[አማ] የምንሰራው',
+                    solutions_title: '[አማ] መፍትሄዎቻችን',
+                    solutions_sub: '[አማ] ከግጦሽ እስከ ሳህን — አቀባዊ የተቀናጀ የወተት ስነ-ምህዳር መገንባት።',
+                    solution_1_title: '[አማ] የወተት ከብት ማደለብ',
+                    solution_1_desc: '[አማ] በላቁ የማደለብ ቴክኒኮች እና የእንስሳት ሕክምና አገልግሎት ፕሪሚየም የበሬ ሥጋ ምርት።',
+                    solution_2_title: '[አማ] የወተት ማቀነባበሪያ እና ምርቶች',
+                    solution_2_desc: '[አማ] ጥሬ ወተትን ለአካባቢ እና ለውጭ ገበያ ወደ ከፍተኛ ጥራት እና አልሚ የወተት ምርቶች መቀየር።',
+                    solution_3_title: '[አማ] የዶሮ እና የእንቁላል ምርት',
+                    solution_3_desc: '[አማ] የፕሮቲን አቅርቦትን ለማሳደግ ከፍተኛ ምርት የሚሰጥ የዶሮ እርሻ።',
+                    solution_4_title: '[አማ] የሰብል እርሻ መፍትሄዎች',
+                    solution_4_desc: '[አማ] የእንስሳት እሴት ሰንሰለታችንን ለማሟላት ለወደፊቱ ዝግጁ የሆነ ዘላቂ እርሻ።',
+                    solution_active: '[አማ] ንቁ',
+                    coming_soon: '[አማ] በቅርቡ',
+                    gallery_label: '[አማ] የእይታ ጉዞ',
+                    gallery_title: '[አማ] ትውፊት ከፈጠራ ጋር',
+                    gallery_sub: '[አማ] ከጥንታዊ የእርሻ ዘዴዎች እስከ ዘመናዊ የግብርና ቴክኖሎጂ — የኢትዮጵያ የወተት ዝግመተ ለውጥ በሥዕሎች።',
+                    impact_label: '[አማ] እድገታችን',
+                    impact_title: '[አማ] ተጽዕኖ መፍጠር',
+                    impact_sub: '[አማ] የኢትዮጵያን ወተት ለመቀየር በምንጓዝበት መንገድ ላይ ሊለኩ የሚችሉ መለኪያዎች።',
+                    impact_1_value: '[አማ] 1,200+',
+                    impact_1_label: '[አማ] የተጎለበቱ ገበሬዎች',
+                    impact_2_value: '[አማ] 5M+',
+                    impact_2_label: '[አማ] የተቀነባበረ ወተት (ሊትር)',
+                    impact_3_value: '[አማ] 350+',
+                    impact_3_label: '[አማ] የማህበረሰብ ሥራዎች',
+                    impact_4_value: '[አማ] 40%',
+                    impact_4_label: '[አማ] ቆሻሻ መቀነስ',
+                    placeholder_note: '[አማ] — ሊተካ የሚገባ —',
+                    download_label: '[አማ] መተግበሪያውን ያግኙ',
+                    download_title: '[አማ] MERን ከእርስዎ ጋር ይውሰዱ።',
+                    download_sub: '[አማ] የMER ኢትዮጵያ መተግበሪያን በማውረድ የእንስሳት ጤናን ለመከታተል፣ እርሻዎን ለማስተዳደር እና የገበያ ዋጋዎችን በቅጽበት ለማግኘት።',
+                    download_btn: '[አማ] APK ያውርዱ',
+                    download_disclaimer: '[አማ] * በAPKPure እና በሌሎች አስተማማኝ መደብሮች ላይ ይገኛል። ኦፊሴላዊ የPlay Store ዝርዝር በቅርቡ ይመጣል።',
+                    contact_label: '[አማ] ያግኙን',
+                    contact_title: '[አማ] እንቅስቃሴውን ይቀላቀሉ',
+                    contact_sub: '[አማ] የኢትዮጵያ የወተት አብዮት አካል ይሁኑ። ያግኙን እና አብረን የወደፊቱን እንገንባ።',
+                    contact_info_title: '[አማ] እንገናኝ',
+                    contact_info_text: '[አማ] ገበሬ፣ ባለሃብት ወይም አጋር ቢሆኑ — ከእርስዎ መስማት እንወዳለን። አብረን፣ የኢትዮጵያን ግብርና መለወጥ እንችላለን።',
+                    form_name: '[አማ] ሙሉ ስም',
+                    form_email: '[አማ] ኢሜይል አድራሻ',
+                    form_phone: '[አማ] ስልክ ቁጥር',
+                    form_message: '[አማ] መልእክት',
+                    form_submit: '[አማ] መልእክት ላክ',
+                },
+                om: {
+                    nav_vision: '[Oro] Mul’ata',
+                    nav_influence: '[Oro] Dhiibbaa Itoophiyaa',
+                    nav_story: '[Oro] Seenaa',
+                    nav_solutions: '[Oro] Furmaata',
+                    nav_gallery: '[Oro] Agarsiisa',
+                    nav_impact: '[Oro] Dhiibbaa',
+                    nav_download: '[Oro] Appii',
+                    nav_login: '[Oro] Seenuu',
+                    nav_signup: '[Oro] Galmaa’uu',
+                    hero_badge: '[Oro] Jijjiirra Aannan Itoophiyaa',
+                    hero_h1_1: '[Oro] Itoophiyaa Ol’kaasuu',
+                    hero_h1_2: '[Oro] Oomisha Aannan',
+                    hero_sub: '[Oro] Qonnaan bultoota humneessuu. Misooma dijitaalaa oofuu. Fuuldura Afrikaa ijaaruu.',
+                    hero_cta_primary: '[Oro] Sochiitti Makaas',
+                    hero_cta_download: '[Oro] Appii Buusaa',
+                    hero_cta_gallery: '[Oro] Agarsiisa Barbaadi',
+                    vision_label: '[Oro] Urjii Keenya',
+                    vision_title: '[Oro] Mul’ata fi Ergaa',
+                    vision_text: '<p>[Oro] Nu <strong>MER</strong> — abdi guddaa qabnu kan jalqabne. Oomisha aannan Itoophiyaa ol’kaasuu fi imala biyyattii gara ogeessummaa dijitaalaa fi geggeessii industirii akka baattuutti saffisuuf.</p><p style="margin-top:16px;">[Oro] Hooggansa mul’ataa Hundee Ministeera Dooktarii Abiyyi Ahmed, Itoophiyaa saffisuun itti dhaabattuutti jirti. <strong>MER</strong> lammummaan isaa kan jijjiirraa kana oofuu — teeknoloojii ammayyaa, gochi jiraatatuu, fi jaalala aanaa qabu walitti fiduun dandeettii qonna aannan Itoophiyaa guutumatti banuuf.</p>',
+                    influence_label: '[Oro] Abbootii Itoophiyaa',
+                    influence_title: '[Oro] Itoophiyaa Gaafa fi Afrikaa keessatti',
+                    influence_sub: '[Oro] Biyya dhaala durii, abdii ammayyaa, fi dhiibbaa guddinaa gad fageenyaan argitu.',
+                    influence_1_title: '[Oro] Madda Namummaa',
+                    influence_1_desc: '[Oro] Itoophiyaan boca hominid durii, 3.2 miliyoon waggaa waggaa Lucy of keessaa qabdi. Dhaala kun Itoophiyaa gaafa Afrikaa fi Afrikaa guutuutti sadarkaa addaa kennatti.',
+                    influence_2_title: '[Oro] Gaafa Hidhaa',
+                    influence_2_desc: '[Oro] Biyya gaafa Afrikaa keessatti nama baay’ee qabdu ta’uu, Itoophiyaan nagaa naannoo, daldala, fi diploomasii keessatti gahee guddaa taphachaa jirti. Dhiibbaan ishee Galaana Diimaa hanga Galaana Guddotti dheerata, fuuldura Afrikaa Bahaa ifa baasti.',
+                    influence_3_title: '[Oro] Urjii Ka’u Afrikaa',
+                    influence_3_desc: '[Oro] Afrikaa keessatti dagaagina qabeenyaa saffisaan, Itoophiyaan buufata oomisha, teeknoloojii, fi qonnaatiif jirti. Jijjiirraa dijitaalaaf qabdu qophii ishee jijjiirraa industirii afuraffaa keessatti geggeessaa akka taatuu taasiseera.',
+                    influence_4_title: '[Oro] Garagarummaa keessa Tokkummaa',
+                    influence_4_desc: '[Oro] Saba fi afaan 80 ol qabdu, Itoophiyaan garagarummaa keessa tokkummaa agarsiisti. Badhaadhummaan aadaa kun uummaa, obsa, fi hawwii innoveeshinii Afrikaa guutuu kakaasu uuma.',
+                    influence_5_title: '[Oro] Jabina Qonnaa',
+                    influence_5_desc: '[Oro] Itoophiyaan Afrikaa keessatti bineensota oomisha guddaa, horii miliyoona 70 ol qabdi. Qonna aannan qofatu biyya nyaachisuu, hojii uumuu, fi oomisha alaatti geggeessaa guddaa ta’uuf dandeettii guddaa qaba.',
+                    influence_6_title: '[Oro] Barii Dijitaalaa',
+                    influence_6_desc: '[Oro] Karoora "Itoophiyaa Dijitaalaa 2025" wajjin, biyyaan gara yeroo dijitaalaatti utaaluu jirti. Kun carraa dur hin argamne jalqaba akka MER kanneen industirii durii jijjiiruuf uuma.',
+                    patriotic_quote_1: '[Oro] "Itoophiyaan biyya qofa osoo hin taane, yaada — obsa, tokkummaa, fi dandeettii hin daangessine waadaa."',
+                    quote_attribution_1: '— <strong>[Oro] Hundee Ministeera Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Biyya Ka’uu',
+                    patriotic_quote_2: '[Oro] "Qonnaan keenya dhaala keenya, teeknoloojiin keenya fuuldura keenya, ummanni keenya immoo qabeenya keenya guddaa."',
+                    quote_attribution_2: '— <strong>[Oro] Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Itoophiyaa Dijitaalaa',
+                    patriotic_quote_3: '[Oro] "Walittin, fuuldura kana ijaarraa — kan darbe keenyatti kabaju fi addunyaa kakaasu."',
+                    quote_attribution_3: '— <strong>[Oro] PM Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Fuuldura Haaraa',
+                    patriotic_quote_4: '[Oro] "Garagarummaan keenya jabina keenya, tokkummaan keenya humna keenya, hojii cimaan keenya immoo fuuldura keenya."',
+                    quote_attribution_4: '— <strong>[Oro] PM Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Garagarummaa keessa Tokkummaa',
+                    patriotic_quote_5: '[Oro] "Itoophiyaa hundaaf taatu, nama tokko hin hafne ijaaruu qabna."',
+                    quote_attribution_5: '— <strong>[Oro] Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Dagaagina Baay’inaa',
+                    patriotic_quote_6: '[Oro] "Fuuldura namoota abdiwwan isaanii bareedinaatti amananii, nu Itoophiyaatti amanna."',
+                    quote_attribution_6: '— <strong>[Oro] PM Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Bareedina Abdiwwan',
+                    patriotic_quote_7: '[Oro] "Itoophiyaan biyya seena isheeti osoo hin taane, fuuldura abdi isheetin beekamuu barbaadu."',
+                    quote_attribution_7: '— <strong>[Oro] PM Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Akka Keenyaan Murteessuu',
+                    patriotic_quote_8: '[Oro] "Nu karaa fi riqichaa qofa osoo hin taane, Itoophiyaa haaraa — abdii, kabajaa, fi carraa qabdu ijaarraa."',
+                    quote_attribution_8: '— <strong>[Oro] Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Abdii Ijaaruu',
+                    patriotic_quote_9: '[Oro] "Renaissance Itoophiyaa lallabii qofa osoo hin taane, sochii — dammaqina uummattoo durii fi of tuuluu."',
+                    quote_attribution_9: '— <strong>[Oro] PM Dooktarii Abiyyi Ahmed</strong> <span style="opacity:0.5;">|</span> [Oro] Renaissance',
+                    landscape_title: '[Oro] Buqqee Itoophiyaa',
+                    landscape_sub: '[Oro] Dhaala qonna boruu waliin wal qabu',
+                    city_title: '[Oro] Qaxxaamura Addis Ababaa',
+                    city_sub: '[Oro] Onnee jijjiirraa dijitaalaa Itoophiyaa',
+                    leadership_placeholder_title: '[Oro] H.E. Dooktarii Abiyyi Ahmed fi Itoophiyaa Haaraa',
+                    leadership_placeholder_text: '[Oro] Fota H.E. Dooktarii Abiyyi Ahmed fi Qaxxaamura Addis Ababaa — bakka bu’uu qabaa',
+                    story_label: '[Oro] Imala Keenya',
+                    story_title: '[Oro] Seenaa fi Abdii Keenya',
+                    story_sub: '[Oro] Boqonnaa haaraa aannan Itoophiyaatiif — dhaala irratti hundaa’ee, innoveeshiniin jabeeffate.',
+                    story_body: '<p class="dropcap">[Oro] Itoophiyaa ni kaattaa. Sochii hin dhaabamne fi dandeettii hin daangessine, biyyi keenya barii haaraatti dhaabbatte. Dhaala qonnaa o’aa irratti hundaa’ee fi guddina tajaajila fi industirii ittiin dagaagte, Itoophiyaa hooggansa mul’ataa fi wallaala Hundee Ministeera Dooktarii Abiyyi Ahmed jalatti jijjiirramaa jirti.</p><p>[Oro] MER keessatti, nu abdi guddaa qabnu kan jalqabne dha. Jijjiirraa kana arguu qofa hin barbaannu. Kan ijaaru ittiin ta’uu filanna. Qonna aannan Itoophiyaa guutumatti jijjiiruuf dhaadhattoota.</p><p>[Oro] Teeknoloojii dijitaalaa ammayyaa, gochi qonnaa jiraatatuu, fi sadarkaa hojii adunyaa walitti fiduun, MER fuuldura haaraa aannan Itoophiyaatiif uumaa jira.</p><p>[Oro] Innoveeshiniin dhaala waliin wal qabutti — qonnaan bultoota xixinnaan teeknoloojiin dagaagan, dargaggoonni qonna ammayyaa keessatti carraa argatan, fi biyyichi Afrikaa guutuutti ragadaa fagaachinaa ta’etti amanna.</p><p>[Oro] Kun kaayyoo keenya. Kun jaalala keenya. Qonna aannan qofa hin jijjiirre. Boqonnaa haaraa seenaa Itoophiyaatti — boqonnaa badhaasa, innoveeshinii, fi lammummaa biyyattiitiif barreessuuf gargaaraa jirra.</p><p>[Oro] Ummata fi mootummaa Itoophiyaa waliin, MER abdiwwan gara dhugaa ta’uutti gargaara. Itoophiyaa dijitaalaan jabeeffatte, industiriin cimtuu, fi qonnaan badhaadhe — har’a qofa osoo hin taane, dhaloota fuulduuraniif.</p>',
+                    solutions_label: '[Oro] Waan Hojjennu',
+                    solutions_title: '[Oro] Furmaata Keenya',
+                    solutions_sub: '[Oro] Daandii irraa hanga sambaaraatti — siistimii aannan walqabate ijaaruuf.',
+                    solution_1_title: '[Oro] Qonnaan Bultoota Aannan',
+                    solution_1_desc: '[Oro] Bu’aa foon bultoota o’aa haala qondaala o’aa fi tajaajila qorannoo bineensaa fayyuu.',
+                    solution_2_title: '[Oro] Hojii fi Oomisha Aannan',
+                    solution_2_desc: '[Oro] Aannan rawaa gara oomisha aannan qulqullina o’aa fi nyaata qabeessaa ta’e, gaafa biyya keessaa fi alatti jiruuf jijjiiruu.',
+                    solution_3_title: '[Oro] Oomisha Lukkuu fi Hanqaaquu',
+                    solution_3_desc: '[Oro] Qonna lukkuu oomisha o’aa akkaarginii foonyaatiif kennuuf.',
+                    solution_4_title: '[Oro] Furmaata Qonnaa Midhaan',
+                    solution_4_desc: '[Oro] Qonna jiraatatuu fuulduuratti qophaa’ee sardamsa bineensaa keenya guutuuf.',
+                    solution_active: '[Oro] Hojii',
+                    coming_soon: '[Oro] Dafan',
+                    gallery_label: '[Oro] Imala Mul’ataa',
+                    gallery_title: '[Oro] Dhaala Innoveeshiniin Wal Qabu',
+                    gallery_sub: '[Oro] Tariiqa qonnaa durii hanga teeknoloojii qonnaa ammayyaatti — jijjiirraa aannan Itoophiyaa suuraan.',
+                    impact_label: '[Oro] Dagaagina Keenya',
+                    impact_title: '[Oro] Dhiibbaa Uumuu',
+                    impact_sub: '[Oro] Bu’aa itti qiyamuu danda’u imala keenya aannan Itoophiyaa jijjiiruuf.',
+                    impact_1_value: '[Oro] 1,200+',
+                    impact_1_label: '[Oro] Qonnaan Bultoota Humneessan',
+                    impact_2_value: '[Oro] 5M+',
+                    impact_2_label: '[Oro] Aannan Hojjetame (Liitira)',
+                    impact_3_value: '[Oro] 350+',
+                    impact_3_label: '[Oro] Hojii Hawaasa',
+                    impact_4_value: '[Oro] 40%',
+                    impact_4_label: '[Oro] Halaaa Hir’achuu',
+                    placeholder_note: '[Oro] — iddoo buusa —',
+                    download_label: '[Oro] Appii Argadhu',
+                    download_title: '[Oro] MER Of Biiratti Fudhadhu.',
+                    download_sub: '[Oro] Appii MER Itoophiyaa buusun fayyaa bineensaa eeguuf, qonna keessan bulchuuf, fi gatii suuqii yeroo isaa argachuuf.',
+                    download_btn: '[Oro] APK Buusaa',
+                    download_disclaimer: '[Oro] * APKPure fi suuqii amanamaa biroo irratti argama. Tarree Play Store itti fufu dafan ni dhufa.',
+                    contact_label: '[Oro] Nuun',
+                    contact_title: '[Oro] Sochiitti Makaas',
+                    contact_sub: '[Oro] Jijjiirra aannan Itoophiyaa keessatti hirmaadhaa. Nuunii fuuldura waliin ijaarree.',
+                    contact_info_title: '[Oro] Haasa’uu',
+                    contact_info_text: '[Oro] Qonnaan bultaa, maallaqaa leellistuu, yookiin hirmaataa taatan — isin irraa dhaga’uu jaallanna. Walittin, qonna Itoophiyaa jijjiiruu dandeenya.',
+                    form_name: '[Oro] Maqaa Guutuu',
+                    form_email: '[Oro] Teessoo Imiiyaalii',
+                    form_phone: '[Oro] Lakkoofsa Bilbilaa',
+                    form_message: '[Oro] Ergaa',
+                    form_submit: '[Oro] Ergii Ergaa',
+                }
+            };
+
+            // ================================================================
+            // DOM REFS
+            // ================================================================
+            const langBtns = document.querySelectorAll('.lang-btn');
+            const heroBg = document.getElementById('heroBg');
+            const cursorDot = document.getElementById('cursorDot');
+            const cursorGlow = document.getElementById('cursorGlow');
+            const header = document.getElementById('header');
+            const hamburger = document.getElementById('hamburger');
+            const mobileOverlay = document.getElementById('mobileNavOverlay');
+            const contactForm = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const i18nElements = document.querySelectorAll('[data-i18n]');
+            const scrollProgress = document.getElementById('scrollProgress');
+            const backToTop = document.getElementById('backToTop');
+            const loader = document.getElementById('loader');
+            const heroTyping = document.getElementById('heroTyping');
+            const quoteSlides = document.querySelectorAll('.quote-slide');
+            const quoteDots = document.querySelectorAll('.quote-dot');
+            const counters = document.querySelectorAll('.counter');
+            const galleryGrid = document.getElementById('galleryGrid');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxTitle = document.getElementById('lightboxTitle');
+            const lightboxDesc = document.getElementById('lightboxDesc');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+
+            const signupOverlay = document.getElementById('signupOverlay');
+            const signupClose = document.getElementById('signupClose');
+            const signupForm = document.getElementById('signupForm');
+            const signupLoginLink = document.getElementById('signupLoginLink');
+
+            let currentLang = 'en';
+            let isMobileMenuOpen = false;
+            let currentQuoteIndex = 0;
+            let quoteInterval = null;
+            let currentLightboxIndex = 0;
+            let lastScrollY = 0;
+
+            // ================================================================
+            // RENDER GALLERY
+            // ================================================================
+            function renderGallery() {
+                galleryGrid.innerHTML = galleryData.map((item, index) => `
+                    <div class="gallery-item scroll-animate animate-zoom-in delay-${(index % 6) + 1}" data-index="${index}">
+                        <img src="${item.src}" alt="${item.title}" loading="lazy" />
+                        <div class="gallery-caption">
+                            <span class="gallery-tag ${item.tag}">${item.tag}</span>
+                            <span>${item.title}</span>
+                            <small>${item.desc}</small>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.gallery-item').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        openLightbox(index);
+                    });
+                });
+            }
+
+            // ================================================================
+            // LIGHTBOX
+            // ================================================================
+            function openLightbox(index) {
+                currentLightboxIndex = index;
+                updateLightbox(index);
+                lightbox.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            function updateLightbox(index) {
+                const item = galleryData[index];
+                if (!item) return;
+                lightboxImg.src = item.src;
+                lightboxImg.alt = item.title;
+                lightboxTitle.textContent = item.title;
+                lightboxDesc.textContent = item.desc;
+            }
+
+            function prevImage() {
+                currentLightboxIndex = (currentLightboxIndex - 1 + galleryData.length) % galleryData.length;
+                updateLightbox(currentLightboxIndex);
+            }
+
+            function nextImage() {
+                currentLightboxIndex = (currentLightboxIndex + 1) % galleryData.length;
+                updateLightbox(currentLightboxIndex);
+            }
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxPrev.addEventListener('click', prevImage);
+            lightboxNext.addEventListener('click', nextImage);
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) closeLightbox();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (lightbox.classList.contains('open')) {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') prevImage();
+                    if (e.key === 'ArrowRight') nextImage();
+                }
+            });
+
+            // ================================================================
+            // SIGNUP POPUP
+            // ================================================================
+            function openSignup() {
+                signupOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSignup() {
+                signupOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            signupClose.addEventListener('click', closeSignup);
+            signupOverlay.addEventListener('click', function(e) {
+                if (e.target === this) closeSignup();
+            });
+            signupLoginLink.addEventListener('click', function() {
+                closeSignup();
+                window.location.href = 'https://mertech.pythonanywhere.com/login';
+            });
+
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('signupUsername').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const phone = document.getElementById('signupPhone').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                const confirm = document.getElementById('signupPasswordConfirm').value;
+
+                if (password !== confirm) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                if (password.length < 6) {
+                    alert('Password must be at least 6 characters.');
+                    return;
+                }
+
+                alert(
+                `✅ Account created for ${username}!\n📧 ${email}\n📱 ${phone}\n\nYou can now log in to MER Ethiopia.`);
+                closeSignup();
+                signupForm.reset();
+            });
+
+            document.getElementById('headerSignupBtn').addEventListener('click', openSignup);
+            document.getElementById('heroSignupBtn').addEventListener('click', openSignup);
+            document.getElementById('mobileSignupBtn').addEventListener('click', openSignup);
+
+            document.getElementById('headerLoginBtn').addEventListener('click', function() {
+                window.location.href = 'https://mertech.pythonanywhere.com/login';
+            });
+            document.getElementById('mobileLoginBtn').addEventListener('click', function() {
+                window.location.href = 'https://mertech.pythonanywhere.com/login';
+            });
+
+            // ================================================================
+            // LOADER
+            // ================================================================
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 800);
+            });
+
+            // ================================================================
+            // TYPING EFFECT
+            // ================================================================
+            function initTyping() {
+                const text = heroTyping.textContent.replace('█', '').trim();
+                const cursor = heroTyping.querySelector('.typed-cursor');
+                if (!cursor) return;
+                let index = 0;
+                heroTyping.textContent = '';
+                heroTyping.appendChild(cursor);
+
+                function type() {
+                    if (index < text.length) {
+                        const char = text[index];
+                        const span = document.createElement('span');
+                        span.textContent = char;
+                        heroTyping.insertBefore(span, cursor);
+                        index++;
+                        setTimeout(type, 30 + Math.random() * 20);
+                    } else {
+                        cursor.style.animation = 'blink 1s step-end infinite';
+                    }
+                }
+                setTimeout(type, 1200);
+            }
+
+            // ================================================================
+            // QUOTE SLIDER
+            // ================================================================
+            function showQuote(index) {
+                quoteSlides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                quoteDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+                currentQuoteIndex = index;
+            }
+
+            function nextQuote() {
+                const next = (currentQuoteIndex + 1) % quoteSlides.length;
+                showQuote(next);
+            }
+
+            function startQuoteAuto() {
+                if (quoteInterval) clearInterval(quoteInterval);
+                quoteInterval = setInterval(nextQuote, 6000);
+            }
+
+            quoteDots.forEach((dot) => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    showQuote(index);
+                    startQuoteAuto();
+                });
+            });
+
+            const quoteSlider = document.getElementById('quoteSlider');
+            let touchStartX = 0;
+            quoteSlider.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            quoteSlider.addEventListener('touchend', (e) => {
+                const diff = touchStartX - e.changedTouches[0].screenX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) nextQuote();
+                    else {
+                        const prev = (currentQuoteIndex - 1 + quoteSlides.length) % quoteSlides.length;
+                        showQuote(prev);
+                    }
+                    startQuoteAuto();
+                }
+            });
+
+            // ================================================================
+            // LANGUAGE
+            // ================================================================
+            function setLanguage(lang) {
+                if (!translations[lang]) return;
+                currentLang = lang;
+                langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+                i18nElements.forEach(el => {
+                    const key = el.dataset.i18n;
+                    const translation = translations[lang]?.[key];
+                    if (translation !== undefined) {
+                        const isHtml = ['vision_text', 'story_body', 'patriotic_quote_1', 'patriotic_quote_2',
+                            'patriotic_quote_3', 'patriotic_quote_4', 'patriotic_quote_5', 'patriotic_quote_6',
+                            'patriotic_quote_7', 'patriotic_quote_8', 'patriotic_quote_9',
+                            'quote_attribution_1', 'quote_attribution_2', 'quote_attribution_3',
+                            'quote_attribution_4', 'quote_attribution_5', 'quote_attribution_6',
+                            'quote_attribution_7', 'quote_attribution_8', 'quote_attribution_9',
+                            'influence_1_desc', 'influence_2_desc', 'influence_3_desc', 'influence_4_desc',
+                            'influence_5_desc', 'influence_6_desc'
+                        ].includes(key);
+                        if (isHtml) {
+                            el.innerHTML = translation;
+                        } else {
+                            el.textContent = translation;
+                        }
+                    }
+                });
+
+                document.querySelectorAll('.impact-card .placeholder-note').forEach(el => {
+                    const t = translations[lang]?.['placeholder_note'];
+                    if (t) el.textContent = t;
+                });
+                document.querySelectorAll('.coming-soon-badge').forEach(el => {
+                    const t = translations[lang]?.['coming_soon'];
+                    if (t) el.textContent = t;
+                });
+                document.querySelectorAll('.solution-card:not(.coming-soon) .coming-soon-badge').forEach(el => {
+                    const t = translations[lang]?.['solution_active'];
+                    if (t) el.textContent = t;
+                });
+                document.querySelectorAll('.gold-ribbon').forEach(el => {
+                    const t = translations[lang]?.['coming_soon'];
+                    if (t) el.textContent = t;
+                });
+
+                localStorage.setItem('mer-lang', lang);
+            }
+
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    setLanguage(this.dataset.lang);
+                    if (isMobileMenuOpen) toggleMobileMenu();
+                });
+            });
+
+            // ================================================================
+            // MOBILE MENU
+            // ================================================================
+            function toggleMobileMenu() {
+                isMobileMenuOpen = !isMobileMenuOpen;
+                hamburger.classList.toggle('active');
+                mobileOverlay.classList.toggle('open');
+                document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+            }
+
+            hamburger.addEventListener('click', toggleMobileMenu);
+            mobileOverlay.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => { if (isMobileMenuOpen) toggleMobileMenu(); });
+            });
+
+            // ================================================================
+            // HEADER - DISAPPEAR ON SCROLL
+            // ================================================================
+            function handleHeaderScroll() {
+                const currentScrollY = window.scrollY;
+                const heroHeight = document.getElementById('hero').offsetHeight;
+
+                if (currentScrollY > 80) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                if (currentScrollY > lastScrollY && currentScrollY > 150) {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+
+                if (currentScrollY < heroHeight * 0.7) {
+                    header.classList.add('light');
+                } else {
+                    header.classList.remove('light');
+                }
+
+                lastScrollY = currentScrollY;
+            }
+
+            // ================================================================
+            // SCROLL HANDLER
+            // ================================================================
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+
+                const progress = (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                scrollProgress.style.width = Math.min(progress, 100) + '%';
+
+                if (scrollY > 500) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+
+                handleHeaderScroll();
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ================================================================
+            // SCROLL ANIMATIONS
+            // ================================================================
+            const scrollAnimateElements = document.querySelectorAll('.scroll-animate');
+
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            scrollAnimateElements.forEach(el => scrollObserver.observe(el));
+
+            // ================================================================
+            // HERO PARALLAX
+            // ================================================================
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 12;
+                const y = (e.clientY / window.innerHeight - 0.5) * 12;
+                heroBg.style.transform = `scale(1.1) translate(${-x}px, ${-y}px)`;
+            });
+
+            // ================================================================
+            // CUSTOM CURSOR
+            // ================================================================
+            if (window.innerWidth > 1024) {
+                document.addEventListener('mousemove', (e) => {
+                    cursorDot.style.left = e.clientX + 'px';
+                    cursorDot.style.top = e.clientY + 'px';
+                    cursorGlow.style.left = e.clientX + 'px';
+                    cursorGlow.style.top = e.clientY + 'px';
+                });
+
+                const hoverTargets = document.querySelectorAll(
+                    '.btn-primary, .btn-secondary, .btn-signup, .btn-login, .btn-download-header, .btn-download-hero, .submit-btn, .solution-card, .impact-card, .nav-links a, .contact-social a, .footer-social a, .hamburger, .lang-btn, .quote-dot, .gallery-item'
+                );
+                hoverTargets.forEach(el => {
+                    el.addEventListener('mouseenter', () => cursorDot.classList.add('hover'));
+                    el.addEventListener('mouseleave', () => cursorDot.classList.remove('hover'));
+                });
+            }
+
+            // ================================================================
+            // RIPPLE EFFECT
+            // ================================================================
+            document.querySelectorAll('.btn-primary, .submit-btn, .signup-btn, .download-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.width = '20px';
+                    ripple.style.height = '20px';
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+
+            // ================================================================
+            // COUNTER ANIMATION
+            // ================================================================
+            function animateCounter(el) {
+                const target = parseFloat(el.dataset.target);
+                if (isNaN(target)) return;
+                const duration = 2000;
+                const startTime = performance.now();
+                const isFloat = target % 1 !== 0;
+
+                function updateCounter(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = eased * target;
+                    if (isFloat) {
+                        el.textContent = current.toFixed(1);
+                    } else {
+                        el.textContent = Math.floor(current);
+                    }
+                    if (progress < 1) {
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        if (isFloat) {
+                            el.textContent = target.toFixed(1);
+                        } else {
+                            el.textContent = target;
+                        }
+                    }
+                }
+                requestAnimationFrame(updateCounter);
+            }
+
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.dataset.animated) {
+                        entry.target.dataset.animated = 'true';
+                        animateCounter(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(c => counterObserver.observe(c));
+
+            // ================================================================
+            // PARTICLES
+            // ================================================================
+            const canvas = document.getElementById('particles-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                let w, h;
+
+                function resize() {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    w = canvas.width = rect.width;
+                    h = canvas.height = rect.height;
+                }
+                resize();
+                window.addEventListener('resize', resize);
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * w;
+                        this.y = Math.random() * h;
+                        this.size = Math.random() * 3 + 1;
+                        this.speedX = (Math.random() - 0.5) * 0.4;
+                        this.speedY = (Math.random() - 0.5) * 0.4;
+                        this.opacity = Math.random() * 0.5 + 0.2;
+                    }
+                    update() {
+                        this.x += this.speedX;
+                        this.y += this.speedY;
+                        if (this.x < 0 || this.x > w) this.speedX *= -1;
+                        if (this.y < 0 || this.y > h) this.speedY *= -1;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+                        ctx.fill();
+                    }
+                }
+
+                const count = Math.min(80, Math.floor((w * h) / 12000));
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle());
+                }
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, w, h);
+                    particles.forEach(p => {
+                        p.update();
+                        p.draw();
+                    });
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 120) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.strokeStyle = `rgba(255,255,255,${0.08 * (1 - dist / 120)})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+            }
+
+            // ================================================================
+            // CONTACT FORM
+            // ================================================================
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+                setTimeout(() => {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
+                    contactForm.reset();
+                    const btnText = submitBtn.querySelector('.btn-text');
+                    const original = btnText.textContent;
+                    btnText.textContent = '✓ Sent!';
+                    btnText.style.color = '#22c55e';
+                    setTimeout(() => {
+                        btnText.textContent = original;
+                        btnText.style.color = '';
+                    }, 3000);
+                }, 1800);
+            });
+
+            // ================================================================
+            // SMOOTH SCROLL
+            // ================================================================
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    const target = document.querySelector(targetId);
+                    if (target) {
+                        e.preventDefault();
+                        const top = target.getBoundingClientRect().top + window.scrollY - header.offsetHeight -
+                            12;
+                        window.scrollTo({ top, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // ================================================================
+            // FOOTER YEAR
+            // ================================================================
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+            // ================================================================
+            // INIT
+            // ================================================================
+            const savedLang = localStorage.getItem('mer-lang');
+            setLanguage(savedLang && translations[savedLang] ? savedLang : 'en');
+
+            renderGallery();
+
+            showQuote(0);
+            startQuoteAuto();
+
+            setTimeout(initTyping, 1000);
+
+            setTimeout(() => {
+                document.querySelectorAll('.scroll-animate').forEach(el => {
+                    if (el.getBoundingClientRect().top < window.innerHeight * 0.85) {
+                        el.classList.add('is-visible');
+                    }
+                });
+                handleHeaderScroll();
+            }, 400);
+
+            console.log('🇪🇹 MER Ethiopia — Enhancing Ethiopian Dairy Production.');
+            console.log('📸 Gallery loaded with ' + galleryData.length + ' images. Replace the "src" URLs with your Cloudinary images.');
+            console.log('🔗 E-commerce: https://mertech.pythonanywhere.com/');
+        })();
+    </script>
+</body>
+</html>
